@@ -11,7 +11,7 @@ English | [简体中文](./README.zh-cn.md)
 - **Turn your Telegram Channel into a MicroBlog**
 - **SEO friendly** `/sitemap.xml`
 - **0 JS on the browser side**
-- **RSS and RSS JSON** `/rss.xml` `/rss.json`
+- **RSS, Atom and JSON Feed** `/rss.xml` `/atom.xml` `/rss.json`
 
 ## 🪧 Demo
 
@@ -139,6 +139,21 @@ NAVS=Title1,URL1;Title2,URL3;Title3,URL3;
 
 ## Enable RSS beautify
 RSS_BEAUTIFY=true
+
+## Feed Formats
+
+This project provides three feed formats:
+
+- **RSS 2.0** (`/rss.xml`) - Traditional RSS feed format
+- **Atom 1.0** (`/atom.xml`) - Modern, well-specified feed format (RFC 4287) with enhanced media support
+- **JSON Feed** (`/rss.json`) - JSON-based feed format
+
+The Atom feed includes enhanced media link relations for better reader support:
+- `rel="image"` for images
+- `rel="enclosure"` for videos and audio attachments  
+- `rel="preview"` for preview images
+- Categories for tags
+
 ```
 
 ## 🙋🏻 FAQs

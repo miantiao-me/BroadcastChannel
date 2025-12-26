@@ -11,7 +11,7 @@
 - **将 Telegram Channel 转为微博客**
 - **SEO 友好** `/sitemap.xml`
 - **浏览器端 0 JS**
-- **提供 RSS 和 RSS JSON** `/rss.xml` `/rss.json`
+- **提供 RSS、Atom 和 JSON Feed** `/rss.xml` `/atom.xml` `/rss.json`
 
 ## 🪧 演示
 
@@ -137,6 +137,21 @@ NAVS=Title1,URL1;Title2,URL3;Title3,URL3;
 
 ## 启用 RSS 美化
 RSS_BEAUTIFY=true
+
+## Feed 格式
+
+本项目提供三种 Feed 格式：
+
+- **RSS 2.0** (`/rss.xml`) - 传统 RSS Feed 格式
+- **Atom 1.0** (`/atom.xml`) - 现代的、规范良好的 Feed 格式（RFC 4287），支持增强的媒体功能
+- **JSON Feed** (`/rss.json`) - 基于 JSON 的 Feed 格式
+
+Atom Feed 包含增强的媒体链接关系，以获得更好的阅读器支持：
+- `rel="image"` 用于图片
+- `rel="enclosure"` 用于视频和音频附件
+- `rel="preview"` 用于预览图片
+- 标签分类支持
+
 ```
 
 ## 🙋🏻 常问问题
