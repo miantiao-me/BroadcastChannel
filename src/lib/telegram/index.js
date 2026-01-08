@@ -1,9 +1,9 @@
-import { $fetch } from 'ofetch'
 import * as cheerio from 'cheerio'
-import { LRUCache } from 'lru-cache'
 import flourite from 'flourite'
-import prism from '../prism'
+import { LRUCache } from 'lru-cache'
+import { $fetch } from 'ofetch'
 import { getEnv } from '../env'
+import prism from '../prism'
 
 const cache = new LRUCache({
   ttl: 1000 * 60 * 5, // 5 minutes
@@ -55,13 +55,15 @@ function getVideo($, item, { staticProxy, index }) {
   video?.attr('src', staticProxy + video?.attr('src'))
     ?.attr('controls', true)
     ?.attr('preload', index > 15 ? 'auto' : 'metadata')
-    ?.attr('playsinline', true).attr('webkit-playsinline', true)
+    ?.attr('playsinline', true)
+    .attr('webkit-playsinline', true)
 
   const roundVideo = $(item).find('.tgme_widget_message_roundvideo_wrap video')
   roundVideo?.attr('src', staticProxy + roundVideo?.attr('src'))
     ?.attr('controls', true)
     ?.attr('preload', index > 15 ? 'auto' : 'metadata')
-    ?.attr('playsinline', true).attr('webkit-playsinline', true)
+    ?.attr('playsinline', true)
+    .attr('webkit-playsinline', true)
   return $.html(video) + $.html(roundVideo)
 }
 
@@ -104,11 +106,20 @@ function modifyHTMLContent($, content, { index } = {}) {
   $(content).find('a')?.each((_index, a) => {
     $(a)?.attr('title', $(a)?.text())?.removeAttr('onclick')
   })
+  // Transform Telegram expandable quotes
+  $(content).find('blockquote[expandable]')?.each((_index, bq) => {
+    const innerHTML = $(bq).html()
+    const id = `expand-${index}-${_index}`
+    const expandable = `<div class="tg-expandable">
+      <input type="checkbox" id="${id}" class="tg-expandable__checkbox">
+      <div class="tg-expandable__content">${innerHTML}</div>
+      <label for="${id}" class="tg-expandable__toggle" aria-label="Expand/Collapse"></label>
+    </div>`
+    $(bq).replaceWith(expandable)
+  })
   $(content).find('tg-spoiler')?.each((_index, spoiler) => {
     const id = `spoiler-${index}-${_index}`
-    $(spoiler)?.attr('id', id)
-      ?.wrap('<label class="spoiler-button"></label>')
-      ?.before(`<input type="checkbox" />`)
+    $(spoiler)?.attr('id', id)?.wrap('<label class="spoiler-button"></label>')?.before(`<input type="checkbox" />`)
   })
   $(content).find('pre').each((_index, pre) => {
     try {

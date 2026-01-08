@@ -2,7 +2,7 @@
 import List from '../../components/list.astro'
 import { getChannelInfo } from '../../lib/telegram'
 
-const q = Astro.url.searchParams.get('q') || Astro.params.q
+const q = Astro.url.searchParams.get('q') || decodeURIComponent(Astro.params.q || '')
 const channel = await getChannelInfo(Astro, {
   q,
 })

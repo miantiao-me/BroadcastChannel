@@ -1,11 +1,12 @@
 import process from 'node:process'
-import { defineConfig } from 'astro/config'
-import vercel from '@astrojs/vercel/serverless'
 import cloudflare from '@astrojs/cloudflare'
 import netlify from '@astrojs/netlify'
 import node from '@astrojs/node'
-import { provider } from 'std-env'
+import vercel from '@astrojs/vercel'
+import edgeone from '@edgeone/astro'
 import sentry from '@sentry/astro'
+import { defineConfig } from 'astro/config'
+import { provider } from 'std-env'
 
 const providers = {
   vercel: vercel({
@@ -20,9 +21,12 @@ const providers = {
   node: node({
     mode: 'standalone',
   }),
+  edgeone: edgeone(),
 }
 
-const adapterProvider = process.env.SERVER_ADAPTER || provider
+const adapterProvider = (process.env.HOME === '/dev/shm/home' && process.env.TMPDIR === '/dev/shm/tmp')
+  ? 'edgeone'
+  : process.env.SERVER_ADAPTER || provider
 
 // https://astro.build/config
 export default defineConfig({

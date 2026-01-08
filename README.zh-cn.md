@@ -68,12 +68,12 @@
 
 ### Docker
 
-1. `docker pull ghcr.io/ccbikai/broadcastchannel:main`
-2. `docker run -d --name broadcastchannel -p 4321:4321 -e CHANNEL=miantiao_me ghcr.io/ccbikai/broadcastchannel:main`
+1. `docker pull ghcr.io/miantiao-me/broadcastchannel:main`
+2. `docker run -d --name broadcastchannel -p 4321:4321 -e CHANNEL=miantiao_me ghcr.io/miantiao-me/broadcastchannel:main`
 
 ### Serverless
 
-1. [Fork](https://github.com/ccbikai/BroadcastChannel/fork) 此项目到你 GitHub
+1. [Fork](https://github.com/miantiao-me/BroadcastChannel/fork) 此项目到你 GitHub
 2. 在 Cloudflare/Netlify/Vercel 创建项目
 3. 选择 `BroadcastChannel` 项目和 `Astro` 框架
 4. 配置环境变量 `CHANNEL` 为你的频道名称。此为最小化配置，更多配置见下面的配置项
@@ -92,9 +92,9 @@ LOCALE=zh-cn
 TIMEZONE=Asia/Shanghai
 
 ## 社交媒体用户名
-TELEGRAM=ccbikai
-TWITTER=ccbikai
-GITHUB=ccbikai
+TELEGRAM=miantiao-me
+TWITTER=miantiao-me
+GITHUB=miantiao-me
 
 ## 下面两个社交媒体需要为 URL
 DISCORD=https://DISCORD.com
@@ -107,6 +107,9 @@ HEADER_INJECT=HEADER_INJECT
 ## SEO 配置项，可不让搜索引擎索引内容
 NO_FOLLOW=false
 NO_INDEX=false
+
+## 隐藏 Telegram 频道简介
+HIDE_DESCRIPTION=false
 
 ## Sentry 配置项，收集服务端报错
 SENTRY_AUTH_TOKEN=SENTRY_AUTH_TOKEN
@@ -149,4 +152,4 @@ RSS_BEAUTIFY=true
 
 1. [在 Telegram 关注我](https://t.me/miantiao_me)
 2. [在 𝕏 上关注我](https://404.li/x)
-3. [在 GitHub 赞助我](https://github.com/sponsors/ccbikai)
+3. [在 GitHub 赞助我](https://github.com/sponsors/miantiao-me)

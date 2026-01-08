@@ -68,12 +68,12 @@ For detailed tutorials, see [Deploy your Astro site](https://docs.astro.build/en
 
 ### Docker
 
-1. `docker pull ghcr.io/ccbikai/broadcastchannel:main`
-2. `docker run -d --name broadcastchannel -p 4321:4321 -e CHANNEL=miantiao_me ghcr.io/ccbikai/broadcastchannel:main`
+1. `docker pull ghcr.io/miantiao-me/broadcastchannel:main`
+2. `docker run -d --name broadcastchannel -p 4321:4321 -e CHANNEL=miantiao_me ghcr.io/miantiao-me/broadcastchannel:main`
 
 ### Serverless
 
-1. [Fork](https://github.com/ccbikai/BroadcastChannel/fork) this project to your GitHub
+1. [Fork](https://github.com/miantiao-me/BroadcastChannel/fork) this project to your GitHub
 2. Create a project on Cloudflare/Netlify/Vercel
 3. Select the `BroadcastChannel` project and the `Astro` framework
 4. Configure the environment variable `CHANNEL` with your channel name. This is the minimal configuration, for more configurations see the options below
@@ -92,9 +92,9 @@ LOCALE=en
 TIMEZONE=America/New_York
 
 ## Social media usernames
-TELEGRAM=ccbikai
-TWITTER=ccbikai
-GITHUB=ccbikai
+TELEGRAM=miantiao-me
+TWITTER=miantiao-me
+GITHUB=miantiao-me
 MASTODON=mastodon.social/@Mastodon
 BLUESKY=bsky.app
 
@@ -109,6 +109,9 @@ HEADER_INJECT=HEADER_INJECT
 ## SEO configuration options, can prevent search engines from indexing content
 NO_FOLLOW=false
 NO_INDEX=false
+
+## Hide Telegram channel description
+HIDE_DESCRIPTION=false
 
 ## Sentry configuration options, collect server-side errors
 SENTRY_AUTH_TOKEN=SENTRY_AUTH_TOKEN
@@ -151,4 +154,4 @@ RSS_BEAUTIFY=true
 
 1. [Follow me on Telegram](https://t.me/miantiao_me)
 2. [Follow me on 𝕏](https://404.li/kai)
-3. [Sponsor me on GitHub](https://github.com/sponsors/ccbikai)
+3. [Sponsor me on GitHub](https://github.com/sponsors/miantiao-me)

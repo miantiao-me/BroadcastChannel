@@ -22,6 +22,7 @@ const MASTODON = getEnv(import.meta.env, Astro, 'MASTODON')
 const BLUESKY = getEnv(import.meta.env, Astro, 'BLUESKY')
 
 const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
+const hideDescription = getEnv(import.meta.env, Astro, 'HIDE_DESCRIPTION')
 ---
 
 <div id="header">
@@ -102,7 +103,7 @@ const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 </div>
 
 {
-  channel?.descriptionHTML && channel?.descriptionHTML.length > 0 && (
+  hideDescription !== 'true' && channel?.descriptionHTML && channel?.descriptionHTML.length > 0 && (
     <div class="text-box" id="site-intro" set:html={channel?.descriptionHTML} />
   )
 }
