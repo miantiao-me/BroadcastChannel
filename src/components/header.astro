@@ -23,6 +23,7 @@ const BLUESKY = getEnv(import.meta.env, Astro, 'BLUESKY')
 
 const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 const hideDescription = getEnv(import.meta.env, Astro, 'HIDE_DESCRIPTION')
+const hideTitle = getEnv(import.meta.env, Astro, 'HIDE_TITLE')
 ---
 
 <div id="header">
@@ -34,11 +35,15 @@ const hideDescription = getEnv(import.meta.env, Astro, 'HIDE_DESCRIPTION')
       class="header-avatar"
     />
   </a>
-  <div class="header-title">
-    <a href={SITE_URL} class="site-title" title={channel?.title}>
-      {channel?.title}
-    </a>
-  </div>
+  {
+    !hideTitle && (
+      <div class="header-title">
+        <a href={SITE_URL} class="site-title" title={channel?.title}>
+          {channel?.title}
+        </a>
+      </div>
+    )
+  }
   <div class="header-icons">
     <a href={RSS_URL} target="_blank" rel="alternate" type="application/rss+xml" title="RSS Feed">
       <img {...rss} alt="RSS" class="social-icon" width="1em" />
