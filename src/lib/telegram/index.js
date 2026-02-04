@@ -166,7 +166,11 @@ function getPost($, item, { channel, staticProxy, index = 0 }) {
       return `${p1}${staticProxy}${p2}`
     })
     // Replace https://t.me/kbjbav/anything?single with https://t.me/kbjba1
-    .replace(/https:\/\/t\.me\/kbjbav\/[^?]+\?single/g, 'https://t.me/kbjba1')
+    //.replace(/https:\/\/t\.me\/kbjbav\/[^?]+\?single/g, 'https://t.me/kbjba1')
+    .replace(/https:\/\/t\.me\/kbjbav\/([^?]+)\?single/g,
+               (_match, postId) => `/posts/${id}`
+            )
+
 
   return {
     id,
