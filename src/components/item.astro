@@ -110,3 +110,77 @@ const commentsClass = 'ml-[3px] border-l-2 border-line pb-6 pl-[15px] pt-[6px] s
     )
   }
 </article>
+
+<script>
+  function showGalleryImage(modal: HTMLElement, index: number): void {
+    const images = modal.querySelectorAll<HTMLElement>('.gallery__img')
+    images.forEach((img, i) => {
+      img.toggleAttribute('hidden', i !== index)
+    })
+    modal.dataset.current = String(index)
+    const counter = modal.querySelector('.gallery__counter')
+    if (counter) {
+      counter.textContent = `${index + 1} / ${images.length}`
+    }
+  }
+
+  function navigateGallery(modal: HTMLElement, dir: number): void {
+    const images = modal.querySelectorAll('.gallery__img')
+    const current = Number.parseInt(modal.dataset.current ?? '0', 10)
+    const next = (current + dir + images.length) % images.length
+    showGalleryImage(modal, next)
+  }
+
+  document.addEventListener('click', (e: MouseEvent) => {
+    const target = e.target as Element
+
+    const trigger = target.closest<HTMLElement>('.image-gallery__trigger')
+    if (trigger) {
+      const galleryId = trigger.dataset.gallery
+      const startIndex = Number.parseInt(trigger.dataset.index ?? '0', 10)
+      if (!galleryId) {
+        return
+      }
+      const modal = document.getElementById(galleryId) as HTMLElement | null
+      if (!modal) {
+        return
+      }
+      // Set active image before native popovertarget opens the modal
+      showGalleryImage(modal, startIndex)
+      return
+    }
+
+    const prevBtn = target.closest('.gallery__prev')
+    if (prevBtn) {
+      const modal = prevBtn.closest<HTMLElement>('.image-gallery__modal')
+      if (modal) {
+        navigateGallery(modal, -1)
+      }
+      return
+    }
+
+    const nextBtn = target.closest('.gallery__next')
+    if (nextBtn) {
+      const modal = nextBtn.closest<HTMLElement>('.image-gallery__modal')
+      if (modal) {
+        navigateGallery(modal, 1)
+      }
+    }
+  })
+
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    const modal = document.querySelector<HTMLElement>('.image-gallery__modal:popover-open')
+    if (!modal) {
+      return
+    }
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      navigateGallery(modal, -1)
+      return
+    }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      navigateGallery(modal, 1)
+    }
+  })
+</script>
