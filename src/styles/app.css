@@ -104,6 +104,127 @@
 }
 
 @layer components {
+  /* ── Scrolling announcement banner ── */
+  .announcement-bar {
+    --bar-bg: linear-gradient(90deg, #d4572a, #b23b00 40%, #d4572a);
+    --bar-text: #fff;
+    background: var(--bar-bg);
+    color: var(--bar-text);
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 32px;
+    height: 32px;
+    position: relative;
+    user-select: none;
+    z-index: 100;
+  }
+
+  .announcement-bar::before,
+  .announcement-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .announcement-bar::before {
+    left: 0;
+    background: linear-gradient(to right, #b23b00, transparent);
+  }
+
+  .announcement-bar::after {
+    right: 0;
+    background: linear-gradient(to left, #b23b00, transparent);
+  }
+
+  .announcement-track {
+    display: inline-flex;
+    animation: marquee 36s linear infinite;
+  }
+
+  .announcement-track span {
+    flex-shrink: 0;
+    padding: 0 48px;
+    letter-spacing: 0.04em;
+  }
+  .announcement-bar:hover .announcement-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .announcement-track {
+      animation: none;
+    }
+  }
+
+  /* ── Nav buttons ── */
+  .nav-btn {
+    position: relative;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .nav-btn:hover {
+    border-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .nav-btn--active {
+    border-color: rgba(0, 0, 0, 0.06);
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  }
+
+  /* ── Pagination buttons ── */
+  .pagination-btn {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: linear-gradient(to bottom, #fff, #faf8f5);
+    padding: 6px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-muted);
+    text-decoration: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+  }
+
+  .pagination-btn:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: linear-gradient(to bottom, #fff, #fef8f4);
+    box-shadow: 0 2px 8px rgba(178, 59, 0, 0.1);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
+  .pagination-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .pagination-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
   .tag-icon {
     width: 16px;
     height: 16px;

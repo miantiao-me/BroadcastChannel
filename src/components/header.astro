@@ -135,7 +135,7 @@ const socialLinks = [
 </header>
 
 {
-  hideDescription !== 'true' && channel?.descriptionHTML && channel?.descriptionHTML.length > 0 && (
+  !hideDescription && channel?.descriptionHTML && channel?.descriptionHTML.length > 0 && (
     <div class:list={[introClass, 'content']} set:html={channel?.descriptionHTML} />
   )
 }

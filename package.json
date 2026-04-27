@@ -11,8 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "postinstall": "test -d .git && simple-git-hooks || true"
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.17",
@@ -44,18 +43,10 @@
     "eslint": "^9.39.4",
     "eslint-plugin-astro": "^1.6.0",
     "eslint-plugin-format": "^2.0.1",
-    "lint-staged": "^16.4.0",
     "prettier-plugin-astro": "^0.14.1",
-    "simple-git-hooks": "^2.13.1",
     "std-env": "^4.0.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
-  },
-  "lint-staged": {
-    "*": "eslint --fix"
   },
   "browserslist": [
     "defaults"

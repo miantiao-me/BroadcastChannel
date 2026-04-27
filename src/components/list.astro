@@ -7,15 +7,12 @@ const { SITE_URL } = Astro.locals
 const { channel, before = true, after = true, isItem = false, pageHeading } = Astro.props
 const posts = channel.posts ?? []
 
-const beforeCursor = posts[posts.length - 1]?.id
-const afterCursor = posts[0]?.id
+const beforeCursor = channel.beforeCursor
+const afterCursor = channel.afterCursor
 const itemsClass = 'mt-5 mb-0 ml-7 list-none pl-0 max-sm:ml-0'
 const paginationClass = 'my-5 flex items-center'
-const paginationLinkClass =
-  'inline-flex min-h-9 items-center justify-center rounded-[30px] border border-muted px-[15px] py-[5px] text-[14px] font-medium text-muted no-underline hover:text-accent hover:no-underline active:bg-line'
 const paginationInfoClass = 'flex-1 text-center align-middle text-[12px] font-medium text-muted'
 const paginationPlaceholderClass = 'inline-block w-[34px]'
-// const cursor = +Astro.params.cursor
 ---
 
 <Layout channel={channel}>
@@ -32,11 +29,22 @@ const paginationPlaceholderClass = 'inline-block w-[34px]'
       ))
     }
   </ol>
+  <slot />
 
   <nav class={paginationClass} aria-label="Pagination">
     {
-      before && beforeCursor > 1 ? (
-        <a href={`${SITE_URL}before/${beforeCursor}`} title="Before" class={paginationLinkClass}>
+      before && beforeCursor ? (
+        <a href={`${SITE_URL}before/${encodeURIComponent(beforeCursor)}`} title="Before" class="pagination-btn">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
           Before
         </a>
       ) : (
@@ -49,8 +57,18 @@ const paginationPlaceholderClass = 'inline-block w-[34px]'
     <div class={paginationInfoClass}></div>
     {
       after && afterCursor ? (
-        <a href={`${SITE_URL}after/${afterCursor}`} title="After" class={paginationLinkClass}>
+        <a href={`${SITE_URL}after/${encodeURIComponent(afterCursor)}`} title="After" class="pagination-btn">
           After
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
         </a>
       ) : (
         <span class={paginationPlaceholderClass} aria-hidden="true">

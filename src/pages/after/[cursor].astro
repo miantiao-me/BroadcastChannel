@@ -1,10 +1,26 @@
 ---
 import List from '../../components/list.astro'
-import { getChannelInfo } from '../../lib/telegram'
+import { getTimelinePage, isRootTimelineCursor } from '../../lib/telegram'
 
-const channel = await getChannelInfo(Astro, {
-  after: Astro.params.cursor,
-})
+if (!Astro.params.cursor) {
+  return Astro.redirect('/')
+}
+
+try {
+  if (isRootTimelineCursor(Astro.params.cursor)) {
+    return Astro.redirect('/')
+  }
+} catch {
+  return Astro.redirect('/')
+}
+
+let channel
+
+try {
+  ;({ channel } = await getTimelinePage(Astro, Astro.params.cursor))
+} catch {
+  return Astro.redirect('/')
+}
 
 channel.seo = {
   noindex: true,

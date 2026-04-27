@@ -10,9 +10,23 @@ locale && dayjs.locale(locale)
 const { SITE_URL } = Astro.locals
 const { post, isItem } = Astro.props
 
-const channel = getEnv(import.meta.env, Astro, 'CHANNEL')
+const channelsStr = getEnv(import.meta.env, Astro, 'CHANNEL')
+const channels = (channelsStr || '')
+  .split(',')
+  .map((c) => c.trim())
+  .filter(Boolean)
+const isMultiChannel = channels.length > 1
 const COMMENTS = getEnv(import.meta.env, Astro, 'COMMENTS')
 const REACTIONS = getEnv(import.meta.env, Astro, 'REACTIONS')
+
+let discussionChannel = channels[0]
+let discussionId = post.id
+
+if (isMultiChannel && post.id.includes('-')) {
+  const parts = post.id.split('-')
+  discussionChannel = parts[0]
+  discussionId = parts.slice(1).join('-')
+}
 
 const datetime = dayjs(post.datetime).tz(timezone)
 const timeago = datetime.isBefore(dayjs().subtract(1, 'w')) ? datetime.format('HH:mm · ll · ddd') : datetime.fromNow()
@@ -102,7 +116,7 @@ const getTagHref = (tag: string) => `/search/result?q=${encodeURIComponent(`#${t
           is:inline
           async
           src="https://telegram.org/js/telegram-widget.js"
-          data-telegram-discussion={`${channel}/${post.id}`}
+          data-telegram-discussion={`${discussionChannel}/${discussionId}`}
           data-comments-limit="50"
           data-colorful="1"
           data-color="454545"

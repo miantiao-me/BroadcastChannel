@@ -21,30 +21,56 @@ const channel = {
   seo: post,
 }
 
+const notFoundChannel = {
+  ...(channelInfo || {}),
+  posts: [],
+  seo: {
+    title: 'Post Not Found',
+    text: 'The requested post could not be found.',
+    noindex: true,
+  },
+}
+
+if (!post) {
+  Astro.response.status = 404
+}
+
 const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 const breadcrumbClass = 'mb-5 py-[10px] font-semibold'
 const breadcrumbListClass = 'm-0 flex list-none items-center p-0'
 const breadcrumbLinkClass = 'inline-flex items-center no-underline'
 const breadcrumbAvatarClass = 'block h-5 w-5 rounded-full border-2 border-white object-cover shadow-soft'
 const breadcrumbTitleClass = 'ml-[10px] flex-1 text-[14px] text-heading'
+const notFoundMessageClass =
+  'ml-[3px] border-l-2 border-line py-[30px] pl-[15px] text-base leading-[1.6] text-muted sm:pl-[30px]'
 ---
 
-<List channel={channel} before={false} after={false} isItem={true} pageHeading={post.title || channel.title}>
-  <nav slot="header" class={breadcrumbClass} aria-label="Breadcrumb">
-    <ol class={breadcrumbListClass}>
-      <li>
-        <a href={SITE_URL} class={breadcrumbLinkClass} title={channel?.title}>
-          <img
-            src={channel?.avatar?.startsWith('http') ? staticProxy + channel?.avatar : voidFile.src}
-            alt={channel?.title}
-            loading="eager"
-            width="20"
-            height="20"
-            class={breadcrumbAvatarClass}
-          />
-          <span class={breadcrumbTitleClass} style={siteTitleStyle}>{channel.title}</span>
-        </a>
-      </li>
-    </ol>
-  </nav>
-</List>
+{
+  !post ? (
+    <List channel={notFoundChannel} before={false} after={false} isItem={true} pageHeading="Post Not Found">
+      <div class={notFoundMessageClass}>The requested post could not be found.</div>
+    </List>
+  ) : (
+    <List channel={channel} before={false} after={false} isItem={true} pageHeading={post.title || channel.title}>
+      <nav slot="header" class={breadcrumbClass} aria-label="Breadcrumb">
+        <ol class={breadcrumbListClass}>
+          <li>
+            <a href={SITE_URL} class={breadcrumbLinkClass} title={channel?.title}>
+              <img
+                src={channel?.avatar?.startsWith('http') ? staticProxy + channel?.avatar : voidFile.src}
+                alt={channel?.title}
+                loading="eager"
+                width="20"
+                height="20"
+                class={breadcrumbAvatarClass}
+              />
+              <span class={breadcrumbTitleClass} style={siteTitleStyle}>
+                {channel.title}
+              </span>
+            </a>
+          </li>
+        </ol>
+      </nav>
+    </List>
+  )
+}

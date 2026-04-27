@@ -15,6 +15,7 @@ export interface Post {
   text: string
   description?: string
   content: string
+  hasImage?: boolean
   reactions: Reaction[]
 }
 
@@ -26,6 +27,9 @@ export interface ChannelInfo {
   avatar: string | undefined
   /** Optional SEO override injected by page routes */
   seo?: SeoMeta
+  beforeCursor?: string
+  afterCursor?: string
+  sitemapAfterCursor?: string
 }
 
 export interface SeoMeta {
@@ -40,6 +44,11 @@ export interface GetChannelInfoParams {
   before?: string
   after?: string
   q?: string
+}
+
+export interface TimelinePage {
+  channel: ChannelInfo
+  pageSize: number
 }
 
 export interface EnvCapableAstro {
