@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/base.astro'
 import Header from '../components/header.astro'
+import TagCloudSection from '../components/TagCloudSection.astro'
 import { getChannelInfo } from '../lib/telegram'
 import { getEnv } from '../lib/env'
 
@@ -24,24 +25,17 @@ const links = (getEnv(import.meta.env, Astro, 'LINKS') || '')
 if (!links.length) {
   return Astro.redirect('/')
 }
+
+const items = links.map((link) => ({
+  href: link.href,
+  label: link.title,
+  title: link.title,
+  external: true,
+}))
 ---
 
-<Layout channel={channel} id="main-container">
-  <slot name="header">
-    <Header channel={channel} />
-  </slot>
+<Layout channel={channel}>
+  <Header channel={channel} />
 
-  <div class="section-title">Links</div>
-
-  <div class="tag-cloud">
-    {
-      links.map((link) => (
-        <div class="tag-cloud-item">
-          <a href={link.href} class="tag" target="_blank" rel="noopener" title={link.title}>
-            {link.title}
-          </a>
-        </div>
-      ))
-    }
-  </div>
+  <TagCloudSection title="Links" items={items} />
 </Layout>

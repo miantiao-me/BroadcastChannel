@@ -2,16 +2,18 @@
 import { getEnv } from '../../lib/env'
 import voidFile from '../../assets/void.png'
 import List from '../../components/list.astro'
-import { getChannelInfo } from '../../lib/telegram'
+import { getChannelInfo, getChannelPost } from '../../lib/telegram'
+import { siteTitleStyle } from '../../lib/ui'
 
 const { SITE_URL } = Astro.locals
 
 const channelInfo = await getChannelInfo(Astro)
 
-const post = await getChannelInfo(Astro, {
-  type: 'post',
-  id: Astro.params.id,
-})
+if (!Astro.params.id) {
+  return Astro.redirect('/')
+}
+
+const post = await getChannelPost(Astro, Astro.params.id)
 
 const channel = {
   ...(channelInfo || {}),
@@ -20,20 +22,29 @@ const channel = {
 }
 
 const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
+const breadcrumbClass = 'mb-5 py-[10px] font-semibold'
+const breadcrumbListClass = 'm-0 flex list-none items-center p-0'
+const breadcrumbLinkClass = 'inline-flex items-center no-underline'
+const breadcrumbAvatarClass = 'block h-5 w-5 rounded-full border-2 border-white object-cover shadow-soft'
+const breadcrumbTitleClass = 'ml-[10px] flex-1 text-[14px] text-heading'
 ---
 
-<List channel={channel} before={false} after={false} isItem={true}>
-  <div slot="header" id="breadcrumb">
-    <img
-      src={channel?.avatar?.startsWith('http') ? staticProxy + channel?.avatar : voidFile.src}
-      alt={channel?.title}
-      loading="eager"
-      class="breadcrumb-avatar"
-    />
-    <div class="breadcrumb-title">
-      <a href={SITE_URL} class="site-title" title={channel?.title}>
-        {channel.title}
-      </a>
-    </div>
-  </div>
+<List channel={channel} before={false} after={false} isItem={true} pageHeading={post.title || channel.title}>
+  <nav slot="header" class={breadcrumbClass} aria-label="Breadcrumb">
+    <ol class={breadcrumbListClass}>
+      <li>
+        <a href={SITE_URL} class={breadcrumbLinkClass} title={channel?.title}>
+          <img
+            src={channel?.avatar?.startsWith('http') ? staticProxy + channel?.avatar : voidFile.src}
+            alt={channel?.title}
+            loading="eager"
+            width="20"
+            height="20"
+            class={breadcrumbAvatarClass}
+          />
+          <span class={breadcrumbTitleClass} style={siteTitleStyle}>{channel.title}</span>
+        </a>
+      </li>
+    </ol>
+  </nav>
 </List>

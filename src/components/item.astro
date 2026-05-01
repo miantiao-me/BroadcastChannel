@@ -1,6 +1,4 @@
 ---
-import '../assets/item.css'
-import 'prismjs/themes/prism.css'
 import dayjs from '../lib/dayjs'
 import { getEnv } from '../lib/env'
 
@@ -18,34 +16,65 @@ const REACTIONS = getEnv(import.meta.env, Astro, 'REACTIONS')
 
 const datetime = dayjs(post.datetime).tz(timezone)
 const timeago = datetime.isBefore(dayjs().subtract(1, 'w')) ? datetime.format('HH:mm · ll · ddd') : datetime.fromNow()
+const hasContent = post.content.length > 0
+const hasReactions = Boolean(REACTIONS && post.reactions?.length > 0)
+const hasTags = post.tags.length > 0
+const articleClass =
+  'mb-[22px] rounded-panel border border-line bg-surface p-[18px] shadow-soft transition duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hover)]'
+const timeBoxClass = 'mb-3 flex items-center leading-none'
+const timeDotClass = 'h-[6px] w-[6px] rounded-full bg-accent opacity-60'
+const timeTextClass = 'm-0 flex-1 pl-2 text-[12.5px] font-medium text-muted'
+const itemLinkClass = 'text-accent no-underline hover:underline'
+const contentClass = 'text-base leading-[1.5]'
+const reactionBoxClass = 'pt-3'
+const reactionListClass = 'm-0 flex flex-wrap gap-[6px]'
+const reactionPillClass =
+  'inline-flex items-center gap-1 rounded-full border border-line bg-code py-[3px] pl-[6px] pr-[8px] text-[12px] text-muted'
+const reactionPaidClass = 'border-[rgba(255,196,0,0.35)] bg-[rgba(255,196,0,0.12)] text-[#9a6a00]'
+const reactionEmojiClass = 'inline-flex items-center text-[14px] leading-none'
+const reactionCountClass = 'font-medium opacity-80 [font-variant-numeric:tabular-nums]'
+const tagBoxClass = 'flex flex-wrap items-center gap-2 text-[13px] leading-[1.6]'
+const tagPaddingClass = COMMENTS && isItem ? 'pb-3' : 'pb-0'
+const tagStandaloneClass = 'pt-3'
+const tagLinkClass =
+  'inline-block rounded-[4px] border border-line px-[10px] py-[2px] text-muted no-underline hover:border-accent hover:text-accent hover:no-underline'
+const commentsClass = 'pt-3'
+const getTagHref = (tag: string) => `/search/result?q=${encodeURIComponent(`#${tag}`)}`
 ---
 
-<div class="item" style={{ 'view-transition-name': `post-${post.id}` }}>
-  <div class="time-box">
-    <div class="dot"></div>
-    <div class="time">
-      <a href={`${SITE_URL}posts/${post.id}`} title={post.datetime} class="item-link">
+<article class={articleClass} style={{ 'view-transition-name': `post-${post.id}` }}>
+  <header class={timeBoxClass}>
+    <span class={timeDotClass} aria-hidden="true"></span>
+    <p class={timeTextClass}>
+      <a href={`${SITE_URL}posts/${post.id}`} title={post.datetime} class={itemLinkClass}>
         <time datetime={post.datetime} title={timeago}>{timeago}</time>
       </a>
-    </div>
-  </div>
-  {post.content.length > 0 && <div class={`text-box content`} set:html={post.content} />}
+    </p>
+  </header>
+  {hasContent && <div class:list={[contentClass, 'content']} set:html={post.content} />}
   {
-    REACTIONS && post.reactions?.length > 0 && (
-      <div class="reaction-box">
-        <div class="reaction-list">
+    hasReactions && (
+      <div class:list={[reactionBoxClass, hasContent && '']}>
+        <div class={reactionListClass}>
           {post.reactions.map((reaction) => (
-            <span class={`reaction-pill${reaction.isPaid ? ' reaction-pill-paid' : ''}`}>
-              <span class="reaction-emoji">
-                {
-                  reaction.isPaid
-                    ? '\u2B50'
-                    : reaction.emojiImage
-                      ? <img src={reaction.emojiImage} alt={reaction.emoji || 'emoji'} loading="lazy" />
-                      : reaction.emoji
-                }
+            <span class:list={[reactionPillClass, reaction.isPaid && reactionPaidClass]}>
+              <span class={reactionEmojiClass}>
+                {reaction.isPaid ? (
+                  '\u2B50'
+                ) : reaction.emojiImage ? (
+                  <img
+                    src={reaction.emojiImage}
+                    alt={reaction.emoji || 'emoji'}
+                    loading="lazy"
+                    width="20"
+                    height="20"
+                    class="block h-[1em] w-[1em]"
+                  />
+                ) : (
+                  reaction.emoji
+                )}
               </span>
-              <span class="reaction-count">{reaction.count}</span>
+              <span class={reactionCountClass}>{reaction.count}</span>
             </span>
           ))}
         </div>
@@ -53,21 +82,22 @@ const timeago = datetime.isBefore(dayjs().subtract(1, 'w')) ? datetime.format('H
     )
   }
   {
-    post.tags.length > 0 && (
-      <div class="tag-box" style={post.content.length === 0 ? 'padding-top: 30px;' : ''}>
-        <div class="tag-icon" />
-        {post.tags.map((tag) => (
-          <a href={`/search/%23${tag}`} title={tag} class="tag">
+    hasTags && (
+      <footer class:list={[tagBoxClass, tagPaddingClass, !hasContent && tagStandaloneClass]}>
+        <span class="tag-icon" aria-hidden="true" />
+        {post.tags.map((tag: string) => (
+          <a href={getTagHref(tag)} title={tag} class={tagLinkClass}>
             {tag}
           </a>
         ))}
-      </div>
+      </footer>
     )
   }
 
   {
     COMMENTS && isItem && (
-      <div class="comments">
+      <section class={commentsClass} aria-label="Comments">
+        {/* Telegram comments are the only intentional client-side JS exception. */}
         <script
           is:inline
           async
@@ -77,7 +107,7 @@ const timeago = datetime.isBefore(dayjs().subtract(1, 'w')) ? datetime.format('H
           data-colorful="1"
           data-color="454545"
         />
-      </div>
+      </section>
     )
   }
-</div>
+</article>

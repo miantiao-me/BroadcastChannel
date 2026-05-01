@@ -1,6 +1,7 @@
+import type { APIRoute } from 'astro'
 import { getChannelInfo } from '../lib/telegram'
 
-export async function GET(Astro) {
+export const GET: APIRoute = async (Astro) => {
   const request = Astro.request
   const url = new URL(request.url)
   const channel = await getChannelInfo(Astro)
@@ -9,7 +10,7 @@ export async function GET(Astro) {
   const pageSize = 20
   let count = +posts[0]?.id
 
-  const pages = []
+  const pages: number[] = []
   pages.push(count)
   while (count > pageSize) {
     count -= pageSize

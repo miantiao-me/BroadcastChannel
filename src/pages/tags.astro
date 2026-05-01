@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/base.astro'
 import Header from '../components/header.astro'
+import TagCloudSection from '../components/TagCloudSection.astro'
 import { getChannelInfo } from '../lib/telegram'
 import { getEnv } from '../lib/env'
 
@@ -10,26 +11,18 @@ channel.seo = {
   title: 'Tags',
 }
 
-const tags = (getEnv(import.meta.env, Astro, 'TAGS') || '').split(',')
+const items = (getEnv(import.meta.env, Astro, 'TAGS') || '')
+  .split(',')
+  .map((tag) => tag.trim())
+  .filter(Boolean)
+  .map((tag) => ({
+    href: `/search/result?q=${encodeURIComponent(`#${tag}`)}`,
+    label: tag,
+  }))
 ---
 
-<Layout channel={channel} id="main-container">
-  <slot name="header">
-    <Header channel={channel} />
-  </slot>
+<Layout channel={channel}>
+  <Header channel={channel} />
 
-  <div class="section-title">Tags</div>
-
-  <div class="tag-cloud">
-    {
-      tags.map((tag: string) => (
-        <div class="tag-cloud-item">
-          <a href={`/search/%23${tag}`} class="tag">
-            {tag}
-          </a>
-          {/* <span class="tag-cloud-item-count">0</span> */}
-        </div>
-      ))
-    }
-  </div>
+  <TagCloudSection title="Tags" items={items} />
 </Layout>

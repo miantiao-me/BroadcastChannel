@@ -5,6 +5,8 @@ import node from '@astrojs/node'
 import vercel from '@astrojs/vercel'
 import edgeone from '@edgeone/astro'
 import sentry from '@sentry/astro'
+import tailwindcss from '@tailwindcss/vite'
+import astroIcon from 'astro-icon'
 import { defineConfig } from 'astro/config'
 import { provider } from 'std-env'
 
@@ -33,6 +35,7 @@ export default defineConfig({
   output: 'server',
   adapter: providers[adapterProvider] || providers.node,
   integrations: [
+    astroIcon(),
     ...(process.env.SENTRY_DSN
       ? [
           sentry({
@@ -51,6 +54,7 @@ export default defineConfig({
       : []),
   ],
   vite: {
+    plugins: [tailwindcss()],
     ssr: {
       noExternal: process.env.DOCKER ? !!process.env.DOCKER : undefined,
       external: [

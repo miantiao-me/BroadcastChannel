@@ -4,42 +4,59 @@ import Header from '../components/header.astro'
 import Item from '../components/item.astro'
 
 const { SITE_URL } = Astro.locals
-const { channel, before = true, after = true, isItem = false } = Astro.props
+const { channel, before = true, after = true, isItem = false, pageHeading } = Astro.props
 const posts = channel.posts ?? []
 
 const beforeCursor = posts[posts.length - 1]?.id
 const afterCursor = posts[0]?.id
+const itemsClass = 'mt-5 mb-0 list-none pl-0'
+const paginationClass = 'my-8 flex items-center'
+const paginationLinkClass =
+  'inline-flex min-h-9 items-center justify-center rounded-[30px] border border-muted px-[15px] py-[5px] text-[14px] font-medium text-muted no-underline hover:border-accent hover:text-accent hover:no-underline active:bg-line'
+const paginationInfoClass = 'flex-1 text-center align-middle text-[12px] font-medium text-muted'
+const paginationPlaceholderClass = 'inline-block w-[34px]'
 // const cursor = +Astro.params.cursor
 ---
 
-<Layout channel={channel} id="main-container">
+<Layout channel={channel}>
+  {pageHeading ? <h1 class="sr-only">{pageHeading}</h1> : null}
   <slot name="header">
     <Header channel={channel} />
   </slot>
-  <div class="items">
-    {posts.map((post) => <Item post={post} isItem={isItem} />)}
-  </div>
+  <ol class={itemsClass} aria-label={isItem ? 'Post' : 'Posts'}>
+    {
+      posts.map((post) => (
+        <li>
+          <Item post={post} isItem={isItem} />
+        </li>
+      ))
+    }
+  </ol>
 
-  <div class="pages-container">
+  <nav class={paginationClass} aria-label="Pagination">
     {
       before && beforeCursor > 1 ? (
-        <a href={`${SITE_URL}before/${beforeCursor}`} title="Before" class="page">
+        <a href={`${SITE_URL}before/${beforeCursor}`} title="Before" class={paginationLinkClass}>
           Before
         </a>
       ) : (
-        <span class="page-placeholder">&nbsp;</span>
+        <span class={paginationPlaceholderClass} aria-hidden="true">
+          &nbsp;
+        </span>
       )
     }
 
-    <div class="pages-info"></div>
+    <div class={paginationInfoClass}></div>
     {
       after && afterCursor ? (
-        <a href={`${SITE_URL}after/${afterCursor}`} title="After" class="page">
+        <a href={`${SITE_URL}after/${afterCursor}`} title="After" class={paginationLinkClass}>
           After
         </a>
       ) : (
-        <span class="page-placeholder">&nbsp;</span>
+        <span class={paginationPlaceholderClass} aria-hidden="true">
+          &nbsp;
+        </span>
       )
     }
-  </div>
+  </nav>
 </Layout>

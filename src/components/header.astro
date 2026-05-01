@@ -1,14 +1,8 @@
 ---
 import { getEnv } from '../lib/env'
+import { Icon } from 'astro-icon/components'
 import voidFile from '../assets/void.png'
-import rss from '../assets/rss.svg'
-import podcast from '../assets/podcast.svg'
-import twitter from '../assets/twitter.svg'
-import github from '../assets/github.svg'
-import discord from '../assets/discord.svg'
-import telegram from '../assets/telegram.svg'
-import mastodon from '../assets/mastodon.svg'
-import bluesky from '../assets/bluesky.svg'
+import { siteTitleStyle } from '../lib/ui'
 
 const { SITE_URL, RSS_URL } = Astro.locals
 const { channel } = Astro.props
@@ -23,108 +17,125 @@ const BLUESKY = getEnv(import.meta.env, Astro, 'BLUESKY')
 
 const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 const hideDescription = getEnv(import.meta.env, Astro, 'HIDE_DESCRIPTION')
+
+const headerMainClass = 'mb-6 flex items-center border-b border-line pb-6 font-semibold'
+const avatarClass = 'block h-12 w-12 rounded-[12px] border border-white bg-white object-cover shadow-soft'
+const titleWrapClass = 'ml-4 min-w-0 flex-1 pr-[10px] text-[22px] font-bold'
+const titleLinkClass = 'text-heading no-underline hover:text-accent hover:no-underline'
+const iconNavClass = 'flex items-center gap-3'
+const socialLinkClass = 'group p-1 no-underline'
+const socialIconClass =
+  'h-[1em] w-[1em] align-bottom [filter:var(--icon-secondary-filter)] group-hover:[filter:var(--icon-hover-filter)]'
+const introClass =
+  'mb-10 break-words rounded-panel border border-line bg-surface p-6 text-base leading-[1.6] text-ink shadow-soft'
+
+const socialLinks = [
+  {
+    href: RSS_URL,
+    title: 'RSS Feed',
+    label: 'RSS Feed',
+    icon: 'ri:rss-line',
+    rel: 'alternate noopener noreferrer',
+    type: 'application/rss+xml',
+  },
+  PODCASRT && {
+    href: PODCASRT,
+    title: 'Podcast',
+    label: 'Podcast',
+    icon: 'ri:mic-line',
+    rel: 'noopener noreferrer',
+  },
+  TWITTER &&
+    TWITTER.length > 0 && {
+      href: `https://x.com/${TWITTER}`,
+      title: 'Twitter',
+      label: 'Twitter / X',
+      icon: 'ri:twitter-x-line',
+      rel: 'noopener noreferrer',
+    },
+  GITHUB &&
+    GITHUB.length > 0 && {
+      href: `https://github.com/${GITHUB}`,
+      title: 'GitHub',
+      label: 'GitHub',
+      icon: 'ri:github-line',
+      rel: 'noopener noreferrer',
+    },
+  TELEGRAM &&
+    TELEGRAM.length > 0 && {
+      href: `https://t.me/${TELEGRAM}`,
+      title: 'Telegram',
+      label: 'Telegram',
+      icon: 'ri:telegram-line',
+      rel: 'noopener noreferrer',
+    },
+  DISCORD &&
+    DISCORD.length > 0 && {
+      href: DISCORD,
+      title: 'Discord',
+      label: 'Discord',
+      icon: 'ri:discord-line',
+      rel: 'noopener noreferrer',
+    },
+  MASTODON &&
+    MASTODON.length > 0 && {
+      href: `https://${MASTODON}`,
+      title: 'Mastodon',
+      label: 'Mastodon',
+      icon: 'ri:mastodon-line',
+      rel: 'noopener noreferrer',
+    },
+  BLUESKY &&
+    BLUESKY.length > 0 && {
+      href: `https://bsky.app/profile/${BLUESKY}`,
+      title: 'BlueSky',
+      label: 'Bluesky',
+      icon: 'ri:bluesky-line',
+      rel: 'noopener noreferrer',
+    },
+].filter(Boolean)
 ---
 
-<div id="header">
-  <a href={SITE_URL} title={channel?.title}>
-    <img
-      src={channel?.avatar?.startsWith('http') ? staticProxy + channel?.avatar : voidFile.src}
-      alt={channel?.title}
-      loading="eager"
-      class="header-avatar"
-    />
-  </a>
-  <div class="header-title">
-    <a href={SITE_URL} class="site-title" title={channel?.title}>
-      {channel?.title}
+<header>
+  <div class={headerMainClass}>
+    <a href={SITE_URL} title={channel?.title}>
+      <img
+        src={channel?.avatar?.startsWith('http') ? staticProxy + channel?.avatar : voidFile.src}
+        alt={channel?.title}
+        loading="eager"
+        fetchpriority="high"
+        width="40"
+        height="40"
+        class={avatarClass}
+      />
     </a>
+    <div class={titleWrapClass}>
+      <a href={SITE_URL} class={titleLinkClass} style={siteTitleStyle} title={channel?.title}>
+        {channel?.title}
+      </a>
+    </div>
+    <nav class={iconNavClass} aria-label="Channel links">
+      {
+        socialLinks.map((item) => (
+          <a
+            href={item.href}
+            title={item.title}
+            target="_blank"
+            rel={item.rel}
+            type={item.type}
+            aria-label={item.label}
+            class={socialLinkClass}
+          >
+            <Icon name={item.icon} class={socialIconClass} aria-hidden="true" />
+          </a>
+        ))
+      }
+    </nav>
   </div>
-  <div class="header-icons">
-    <a href={RSS_URL} target="_blank" rel="alternate" type="application/rss+xml" title="RSS Feed">
-      <img {...rss} alt="RSS" class="social-icon" width="1em" />
-    </a>
-
-    {
-      PODCASRT && (
-        <a href={PODCASRT} target="_blank" title="Podcast">
-          <img {...podcast} alt="Podcast" class="social-icon" width="1em" />
-        </a>
-      )
-    }
-
-    {
-      TWITTER && TWITTER.length > 0 && (
-        <a href={`https://twitter.com/${TWITTER}`} title="Twitter" target="_blank">
-          <img {...twitter} alt={`twitter.com/${TWITTER}`} class="social-icon" width="1em" />
-        </a>
-      )
-    }
-
-    {
-      GITHUB && GITHUB.length > 0 && (
-        <a href={`https://github.com/${GITHUB}`} title="GitHub" target="_blank">
-          <img {...github} alt={`github.com/${GITHUB}`} class="social-icon" width="1em" />
-        </a>
-      )
-    }
-
-    {
-      TELEGRAM && TELEGRAM.length > 0 && (
-        <a href={`https://t.me/${TELEGRAM}`} title="Telegram" target="_blank">
-          <img {...telegram} alt={`t.me/${TELEGRAM}`} class="social-icon" width="1em" />
-        </a>
-      )
-    }
-
-    {
-      DISCORD && DISCORD.length > 0 && (
-        <a href={DISCORD} title="Discord" target="_blank">
-          <img {...discord} alt="Discord Invite" class="social-icon" width="1em" />
-        </a>
-      )
-    }
-
-    {
-      MASTODON && MASTODON.length > 0 && (
-        <a href={`https://${MASTODON}`} title="Mastodon" target="_blank">
-          <img {...mastodon} alt={`@${MASTODON}`} class="social-icon" width="1em" />
-        </a>
-      )
-    }
-
-    {
-      BLUESKY && BLUESKY.length > 0 && (
-        <a href={`https://bsky.app/profile/${BLUESKY}`} title="BlueSky" target="_blank">
-          <img {...bluesky} alt={`@${BLUESKY}`} class="social-icon" width="1em" />
-        </a>
-      )
-    }
-  </div>
-</div>
+</header>
 
 {
   hideDescription !== 'true' && channel?.descriptionHTML && channel?.descriptionHTML.length > 0 && (
-    <div class="text-box" id="site-intro" set:html={channel?.descriptionHTML} />
+    <div class:list={[introClass, 'content']} set:html={channel?.descriptionHTML} />
   )
 }
-
-<style>
-  #site-intro {
-    color: var(--secondary-color);
-    background-color: var(--code-background-color);
-    word-break: break-word;
-
-    & :global(.emoji) {
-      font-style: normal;
-      margin-right: 2px;
-    }
-  }
-
-  .social-icon {
-    padding: 4px;
-  }
-
-  .header-icons {
-    gap: 2px;
-  }
-</style>

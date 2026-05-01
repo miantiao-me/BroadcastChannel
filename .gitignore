@@ -27,3 +27,6 @@ pnpm-debug.log*
 .netlify
 .wrangler
 .edgeone
+
+.agents
+.claude

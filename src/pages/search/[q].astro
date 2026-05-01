@@ -9,7 +9,8 @@ const channel = await getChannelInfo(Astro, {
 
 channel.seo = {
   title: `${q}`,
+  noindex: true,
 }
 ---
 
-<List channel={channel} before={false} after={false} />
+<List channel={channel} before={false} after={false} pageHeading={`Search: ${q}`} />

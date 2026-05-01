@@ -35,6 +35,6 @@ jobs:
       - name: Sync check
         if: failure()
         run: |
-          echo "[Error] 由于上游仓库的 workflow 文件变更，导致 GitHub 自动暂停了本次自动更新，你需要手动 Sync Fork 一次。"
-          echo "[Error] Due to a change in the workflow file of the upstream repository, GitHub has automatically suspended the scheduled automatic update. You need to manually sync your fork."
+          echo "[Error] GitHub paused this scheduled sync because the upstream workflow file changed."
+          echo "[Error] Manually sync your fork once to re-enable future automatic updates."
           exit 1
