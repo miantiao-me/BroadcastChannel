@@ -1,0 +1,14 @@
+---
+import List from '../../components/list.astro'
+import { getChannelInfo } from '../../lib/telegram'
+
+const query = Astro.url.searchParams.get('q')?.trim() ?? ''
+const channel = await getChannelInfo(Astro, { q: query })
+channel.seo = {
+  title: query ? `Search: ${query}` : 'Search',
+  noindex: true,
+}
+const pageHeading = query ? `Search results for “${query}”` : 'Search results'
+---
+
+<List channel={channel} before={false} after={false} pageHeading={pageHeading} />

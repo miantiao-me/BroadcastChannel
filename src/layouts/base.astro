@@ -77,8 +77,7 @@ const seoParams = {
   },
 }
 
-const GOOGLE_SEARCH_SITE = getEnv(import.meta.env, Astro, 'GOOGLE_SEARCH_SITE')
-const searchAction = GOOGLE_SEARCH_SITE ? 'https://www.google.com/search' : `${SITE_URL}search/result`
+const searchAction = `${SITE_URL}search/result`
 
 const HEADER_INJECT = getEnv(import.meta.env, Astro, 'HEADER_INJECT')
 const FOOTER_INJECT = getEnv(import.meta.env, Astro, 'FOOTER_INJECT')
@@ -96,28 +95,31 @@ const navs: NavItem[] = (getEnv(import.meta.env, Astro, 'NAVS') || '')
   })
 
 const layoutShellClass = 'mx-5'
-const layoutGridClass = 'mx-auto flex w-full max-w-[800px] flex-col-reverse sm:flex-row sm:items-start'
-const mainPanelClass = 'w-full min-w-0 pb-5 pt-[10px] sm:mr-5 sm:flex-1 sm:border-r sm:border-line sm:pr-[30px] sm:pt-5'
+const layoutGridClass = 'mx-auto grid w-full max-w-[1040px] gap-8 py-6 lg:grid-cols-[1.75fr_300px]'
+const mainPanelClass = 'w-full min-w-0 space-y-6 pb-8'
 const asidePanelClass =
-  'sticky top-0 w-full min-w-0 border-b border-line bg-paper pb-[10px] shadow-[0_4px_16px_-16px_rgba(0,0,0,0.1)] sm:w-[200px] sm:min-w-[200px] sm:self-start sm:border-b-0 sm:bg-transparent sm:pb-5 sm:shadow-none'
-const asideInnerClass = 'relative overflow-y-visible sm:max-h-[100svh] sm:overflow-y-auto'
-const navListClass = 'm-0 flex list-none flex-wrap gap-[2px] pl-0 pt-5 sm:block'
-const navItemClass = 'flex items-center text-[14px] leading-none sm:mb-[10px] sm:text-base sm:leading-normal'
+  'sticky top-6 space-y-4 rounded-[24px] border border-line bg-paper/90 p-4 shadow-soft backdrop-blur-sm sm:w-[280px] sm:self-start'
+const asideInnerClass = 'relative overflow-y-visible sm:max-h-[calc(100svh-4rem)] sm:overflow-y-auto'
+const navListClass = 'm-0 flex list-none flex-wrap gap-2 pl-0 pt-5 sm:block'
+const navItemClass = 'flex items-center text-[14px] leading-none sm:mb-3 sm:text-base sm:leading-normal'
 const navLinkClass =
-  'flex-1 inline-block rounded-panel px-[10px] py-[5px] text-heading no-underline transition-[background-color,box-shadow] duration-150 ease-in-out hover:bg-white/65 hover:shadow-soft hover:no-underline'
-const navLinkCurrentClass = 'bg-white/75 shadow-soft'
+  'inline-flex w-full items-center rounded-full px-4 py-2 text-[14px] font-medium text-heading no-underline transition duration-150 ease-in-out hover:bg-code hover:text-accent sm:text-[15px]'
+const navLinkCurrentClass = 'bg-code shadow-soft'
 const skipLinkClass =
-  'pointer-events-none absolute left-5 top-0 z-[1100] -translate-y-full rounded-panel bg-heading px-3 py-2 text-sm text-white no-underline transition-transform duration-150 focus-visible:pointer-events-auto focus-visible:translate-y-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading'
+  'pointer-events-none absolute left-5 top-0 z-[1100] -translate-y-full rounded-[18px] bg-heading px-3 py-2 text-sm text-white no-underline transition-transform duration-150 focus-visible:pointer-events-auto focus-visible:translate-y-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading'
 const searchToggleId = 'search-toggle'
 const searchToggleClass = 'peer sr-only sm:hidden'
 const searchToggleLabelClass =
-  'absolute right-0 top-5 inline-flex h-6 w-6 items-center justify-center rounded-panel bg-paper text-base leading-6 text-heading no-underline peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-heading sm:hidden'
-const searchFormClass = 'mt-3 hidden rounded-panel bg-code p-2 text-muted peer-checked:block sm:mt-0 sm:block'
+  'absolute right-0 top-5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-paper text-base leading-6 text-heading no-underline peer-focus-visible:outline peer-focus-visible:outline-1 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-heading sm:hidden'
+const searchFormClass =
+  'mt-4 hidden rounded-[18px] border border-line bg-surface p-3 text-muted shadow-soft peer-checked:block sm:mt-0 sm:block'
 const searchInputClass =
-  'box-border w-full rounded-panel border border-paper bg-code px-2 text-[16px] leading-[2.4] text-muted outline-none placeholder:text-muted focus-visible:border-heading focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-heading sm:text-[12px]'
+  'box-border w-full rounded-[14px] border border-line bg-paper px-4 py-3 text-[16px] leading-[1.6] text-heading outline-none placeholder:text-muted focus:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading'
+const themeToggleClass =
+  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-base leading-none text-heading transition hover:bg-code hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading'
 const footerClass = 'hidden p-2 text-[14px] leading-[1.5] text-footer sm:block'
 const backToTopClass =
-  'pointer-events-auto z-[1000] flex h-8 w-8 items-center justify-center rounded-full bg-code text-[24px] opacity-90 transition-transform duration-300 hover:-translate-y-[3px] active:translate-y-px'
+  'pointer-events-auto z-[1000] flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white shadow-soft transition duration-300 hover:-translate-y-[3px] active:translate-y-px'
 const backToTopIconClass = 'h-auto w-auto [filter:var(--icon-secondary-filter)]'
 const skipLinkText = 'Skip to main content'
 const searchLabelText = 'Search'
@@ -128,7 +130,8 @@ const searchLabelText = 'Search'
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f4f1ec" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f1ec" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#07111f" />
     <link rel="alternate" type="application/rss+xml" title={`${RSS_PREFIX}${channel?.title}`} href={RSS_URL} />
     <SEO
       titleTemplate={hasCustomTitle ? `%s | ${siteTitle}` : undefined}
@@ -207,6 +210,9 @@ const searchLabelText = 'Search'
                 </ul>
               </nav>
 
+              <button type="button" class={themeToggleClass} data-theme-toggle aria-label="Toggle light and dark theme">
+                🌙
+              </button>
               <input
                 id={searchToggleId}
                 class={searchToggleClass}
@@ -216,14 +222,13 @@ const searchLabelText = 'Search'
               />
               <label for={searchToggleId} class={searchToggleLabelClass} aria-hidden="true">🔍</label>
               <form class={searchFormClass} action={searchAction} method="get" role="search">
-                {GOOGLE_SEARCH_SITE ? <input type="hidden" name="as_sitesearch" value={GOOGLE_SEARCH_SITE} /> : null}
                 <label class="sr-only" for="search-query">{searchLabelText}</label>
                 <input
                   id="search-query"
                   class={searchInputClass}
                   type="search"
                   name="q"
-                  placeholder="Search…"
+                  placeholder="Search posts…"
                   autocomplete="off"
                   inputmode="search"
                   spellcheck={false}
@@ -260,5 +265,81 @@ const searchLabelText = 'Search'
       </div>
     </main>
     <Fragment set:html={FOOTER_INJECT} />
+    <script is:inline>
+      ;(() => {
+        const storageKey = 'broadcastchannel-theme'
+        const root = document.documentElement
+        const storedTheme = localStorage.getItem(storageKey)
+        const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches
+        const themeToggle = document.querySelector('[data-theme-toggle]')
+        const startTheme = storedTheme || (prefersDark ? 'dark' : 'light')
+
+        function updateToggleButton(theme) {
+          if (!themeToggle) {
+            return
+          }
+          themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙'
+          themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme')
+        }
+
+        function getTelegramContainers() {
+          return Array.from(document.querySelectorAll('[data-telegram-container]'))
+        }
+
+        function createTelegramWidget(container) {
+          if (!container || container.dataset.loaded === '1') {
+            return
+          }
+          const script = document.createElement('script')
+          script.async = true
+          script.src = 'https://telegram.org/js/telegram-widget.js?23'
+          script.setAttribute('data-telegram-discussion', container.dataset.telegramDiscussion || '')
+          script.setAttribute('data-comments-limit', container.dataset.commentsLimit || '5')
+          script.setAttribute('data-dark', root.dataset.theme === 'dark' ? '1' : '0')
+          container.appendChild(script)
+          container.dataset.loaded = '1'
+        }
+
+        function reloadTelegramWidgets() {
+          getTelegramContainers().forEach((container) => {
+            if (container.dataset.loaded !== '1') {
+              return
+            }
+            container.innerHTML = ''
+            container.dataset.loaded = '0'
+            createTelegramWidget(container)
+          })
+        }
+
+        function applyTheme(theme) {
+          const value = theme === 'dark' ? 'dark' : 'light'
+          root.dataset.theme = value
+          root.classList.remove(value === 'dark' ? 'light' : 'dark')
+          root.classList.add(value)
+          document.documentElement.style.colorScheme = value
+          updateToggleButton(value)
+          localStorage.setItem(storageKey, value)
+          reloadTelegramWidgets()
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+          applyTheme(startTheme)
+          if (themeToggle) {
+            themeToggle.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'))
+          }
+          document.querySelectorAll('details[data-telegram-comments]').forEach((details) => {
+            details.addEventListener('toggle', () => {
+              if (!details.open) {
+                return
+              }
+              const container = details.querySelector('[data-telegram-container]')
+              if (container) {
+                createTelegramWidget(container)
+              }
+            })
+          })
+        })
+      })()
+    </script>
   </body>
 </html>

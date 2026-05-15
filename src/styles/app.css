@@ -36,10 +36,20 @@
     --dot-size: 8px;
     --icon-hover-filter: invert(51%) sepia(0%) saturate(0%) hue-rotate(23deg) brightness(90%) contrast(90%);
     --icon-secondary-filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(129deg) brightness(86%) contrast(88%);
-  }
-
-  * {
-    -webkit-tap-highlight-color: transparent;
+    --color-paper: #f4f1ec;
+    --color-ink: #12202d;
+    --color-heading: #111827;
+    --color-accent: #b23b00;
+    --color-surface: #ffffff;
+    --color-code: #f7f5f0;
+    --color-muted: #5e6c7c;
+    --color-link: #2f5366;
+    --color-link-hover: #1f4250;
+    --color-line: rgba(45, 52, 64, 0.08);
+    --color-footer: #6c788f;
+    --shadow-soft: 0 18px 60px -48px rgba(0, 0, 0, 0.18), 0 6px 18px -9px rgba(0, 0, 0, 0.1);
+    --radius-panel: 24px;
+    --radius-media: 18px;
   }
 
   html {
@@ -47,14 +57,48 @@
     scroll-behavior: smooth;
   }
 
+  html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  html[data-theme='dark'],
+  html.dark {
+    --color-paper: #07111f;
+    --color-ink: #e8eef9;
+    --color-heading: #f8fbff;
+    --color-accent: #8db6ff;
+    --color-surface: #0d1c33;
+    --color-code: #12273e;
+    --color-muted: #9db2d1;
+    --color-link: #9ec0ff;
+    --color-link-hover: #cde5ff;
+    --color-line: rgba(255, 255, 255, 0.08);
+    --color-footer: #8a9bb8;
+    --shadow-soft: 0 24px 80px -56px rgba(0, 0, 0, 0.42), 0 8px 24px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
+    min-height: 100vh;
+    margin: 0;
     background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  main {
+    min-height: 100vh;
   }
 
   img {
     max-width: 100%;
+    display: block;
   }
 
   a:link,
@@ -67,7 +111,14 @@
   a:hover {
     color: var(--color-link-hover);
     text-decoration: underline;
-    text-underline-offset: 0.2rem;
+    text-underline-offset: 0.18rem;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 
   a:focus-visible,
@@ -80,11 +131,21 @@
 
   hr {
     border: none;
-    height: 2px;
-    color: var(--color-line);
+    height: 1px;
     background-color: var(--color-line);
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
+  }
+
+  details.comment-panel summary {
+    list-style: none;
+  }
+
+  details.comment-panel summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details.comment-panel summary {
+    cursor: pointer;
   }
 }
 
