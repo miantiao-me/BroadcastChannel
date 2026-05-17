@@ -21,6 +21,8 @@
   --color-link-hover: #3f4850;
   --color-line: rgba(0, 0, 0, 0.05);
   --color-footer: #666666;
+  --color-nav-hover: rgba(255, 255, 255, 0.65);
+  --color-nav-active: rgba(255, 255, 255, 0.75);
   --shadow-soft:
     0 1px 2px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.02), 0 4px 8px rgba(0, 0, 0, 0.02),
     0 8px 16px rgba(0, 0, 0, 0.02);
@@ -38,6 +40,35 @@
     --icon-secondary-filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(129deg) brightness(86%) contrast(88%);
   }
 
+  html.dark {
+    color-scheme: dark;
+    --color-paper: #151513;
+    --color-ink: #e5e5e0;
+    --color-heading: #ffffff;
+    --color-accent: #e0601d;
+    --color-surface: #20201e;
+    --color-code: #1c1c1a;
+    --color-muted: #a09a90;
+    --color-link: #889eb0;
+    --color-link-hover: #a3b8c9;
+    --color-line: rgba(255, 255, 255, 0.08);
+    --color-footer: #8c867e;
+    --color-nav-hover: rgba(255, 255, 255, 0.06);
+    --color-nav-active: rgba(255, 255, 255, 0.1);
+
+    --icon-hover-filter: invert(90%) sepia(5%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%);
+    --icon-secondary-filter: invert(65%) sepia(5%) saturate(100%) hue-rotate(0deg) brightness(85%) contrast(85%);
+  }
+
+  /* Micro-animations and visibility for theme toggle button */
+  #theme-toggle svg {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #theme-toggle:hover svg {
+    transform: rotate(15deg);
+  }
+
   * {
     -webkit-tap-highlight-color: transparent;
   }
@@ -45,12 +76,20 @@
   html {
     color-scheme: light;
     scroll-behavior: smooth;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
   }
 
   body {
     background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
   }
 
   img {
@@ -141,5 +180,43 @@
       bottom: auto;
       pointer-events: auto;
     }
+  }
+}
+
+/* Root-level theme toggle display rules to override all utilities */
+html:not(.dark) .theme-toggle-sun {
+  display: none !important;
+}
+html:not(.dark) .theme-toggle-moon {
+  display: inline-block !important;
+  animation: theme-spin-in-moon 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+html.dark .theme-toggle-sun {
+  display: inline-block !important;
+  animation: theme-spin-in-sun 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+html.dark .theme-toggle-moon {
+  display: none !important;
+}
+
+@keyframes theme-spin-in-sun {
+  0% {
+    transform: rotate(-120deg) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes theme-spin-in-moon {
+  0% {
+    transform: rotate(120deg) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
   }
 }

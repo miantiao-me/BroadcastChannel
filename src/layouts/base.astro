@@ -104,8 +104,8 @@ const asideInnerClass = 'relative overflow-y-visible sm:max-h-[100svh] sm:overfl
 const navListClass = 'm-0 flex list-none flex-wrap gap-[2px] pl-0 pt-5 sm:block'
 const navItemClass = 'flex items-center text-[14px] leading-none sm:mb-[10px] sm:text-base sm:leading-normal'
 const navLinkClass =
-  'flex-1 inline-block rounded-panel px-[10px] py-[5px] text-heading no-underline transition-[background-color,box-shadow] duration-150 ease-in-out hover:bg-white/65 hover:shadow-soft hover:no-underline'
-const navLinkCurrentClass = 'bg-white/75 shadow-soft'
+  'flex-1 inline-block rounded-panel px-[10px] py-[5px] text-heading no-underline transition-[background-color,box-shadow] duration-150 ease-in-out hover:bg-nav-hover hover:shadow-soft hover:no-underline'
+const navLinkCurrentClass = 'bg-nav-active shadow-soft'
 const skipLinkClass =
   'pointer-events-none absolute left-5 top-0 z-[1100] -translate-y-full rounded-panel bg-heading px-3 py-2 text-sm text-white no-underline transition-transform duration-150 focus-visible:pointer-events-auto focus-visible:translate-y-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading'
 const searchToggleId = 'search-toggle'
@@ -129,6 +129,15 @@ const searchLabelText = 'Search'
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f4f1ec" />
+    <script is:inline>
+      const saved = localStorage.getItem('theme')
+      const isDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      document.documentElement.classList.toggle('dark', isDark)
+      const meta = document.querySelector('meta[name="theme-color"]')
+      if (meta) {
+        meta.setAttribute('content', isDark ? '#151513' : '#f4f1ec')
+      }
+    </script>
     <link rel="alternate" type="application/rss+xml" title={`${RSS_PREFIX}${channel?.title}`} href={RSS_URL} />
     <SEO
       titleTemplate={hasCustomTitle ? `%s | ${siteTitle}` : undefined}
@@ -260,5 +269,26 @@ const searchLabelText = 'Search'
       </div>
     </main>
     <Fragment set:html={FOOTER_INJECT} />
+    <script is:inline>
+      function setupThemeToggle() {
+        const toggleBtn = document.getElementById('theme-toggle')
+        if (!toggleBtn) {
+          return
+        }
+
+        toggleBtn.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark')
+          localStorage.setItem('theme', isDark ? 'dark' : 'light')
+
+          const themeColorMeta = document.querySelector('meta[name="theme-color"]')
+          if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', isDark ? '#151513' : '#f4f1ec')
+          }
+        })
+      }
+
+      setupThemeToggle()
+      document.addEventListener('astro:after-swap', setupThemeToggle)
+    </script>
   </body>
 </html>
