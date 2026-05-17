@@ -1,9 +1,21 @@
 import type { APIRoute } from 'astro'
 import { getChannelInfo } from '../lib/telegram'
 
+function getOrigin(request: Request): string {
+  const proto = (request.headers.get('x-forwarded-proto') || 'http').split(',')[0].trim()
+  const host = (request.headers.get('x-forwarded-host') || request.headers.get('host') || '').split(',')[0].trim()
+
+  if (host) {
+    const cleanHost = host.includes('://') ? new URL(host).host : host
+    return `${proto}://${cleanHost}`
+  }
+
+  return new URL(request.url).origin
+}
+
 export const GET: APIRoute = async (Astro) => {
   const request = Astro.request
-  const url = new URL(request.url)
+  const origin = getOrigin(request)
   const channel = await getChannelInfo(Astro)
   const posts = channel.posts || []
 
@@ -20,7 +32,7 @@ export const GET: APIRoute = async (Astro) => {
   const sitemaps = pages.map((page) => {
     return `
 <sitemap>
-  <loc>${url.origin}/sitemap/${page}.xml</loc>
+  <loc>${origin}/sitemap/${page}.xml</loc>
 </sitemap>`
   })
 
