@@ -235,59 +235,90 @@ function getImageStickers($: CheerioAPI, message: MessageSelection, options: Ind
 
 function getImages($: CheerioAPI, message: MessageSelection, options: MessageAssetOptions): string {
   const { staticProxy = '', id = '', index = 0, title = '' } = options
-  const fragments: string[] = []
   const loading = getImageLoading(index)
   const safeTitle = escapeHtmlAttribute(title || 'Image from post')
-  const safePreviewLabel = escapeHtmlAttribute(title ? `Open image preview: ${title}` : 'Open image preview')
   const safeCloseLabel = 'Close image preview'
 
-  for (const [photoIndex, photoNode] of message.find('.tgme_widget_message_photo_wrap').toArray().entries()) {
+  interface PhotoData { imageUrl: string, width: number, height: number }
+  const photos: PhotoData[] = []
+
+  for (const photoNode of message.find('.tgme_widget_message_photo_wrap').toArray()) {
     const imageUrl = $(photoNode).attr('style')?.match(STYLE_URL_REGEX)?.[1]
-
-    if (!imageUrl) {
+    if (!imageUrl)
       continue
-    }
-
-    const popoverId = `modal-${id}-${photoIndex}`
     const { width, height } = inferImageDimensions($, photoNode)
-    fragments.push(`
-      <button
-        type="button"
-        class="image-preview-button image-preview-wrap"
-        popovertarget="${popoverId}"
-        popovertargetaction="show"
-        aria-label="${safePreviewLabel}"
-      >
-        <img src="${staticProxy + imageUrl}" alt="${safeTitle}" width="${width}" height="${height}" loading="${loading}" />
-      </button>
-      <div class="modal" id="${popoverId}" popover aria-label="Image preview">
-        <button
-          type="button"
-          class="modal__backdrop"
-          popovertarget="${popoverId}"
-          popovertargetaction="hide"
-          aria-label="${safeCloseLabel}"
-        ></button>
-        <button
-          type="button"
-          class="modal__close"
-          popovertarget="${popoverId}"
-          popovertargetaction="hide"
-          aria-label="${safeCloseLabel}"
-        >&times;</button>
-        <div class="modal__surface">
-          <img class="modal-img" src="${staticProxy + imageUrl}" alt="${safeTitle}" width="${width}" height="${height}" loading="lazy" />
-        </div>
-      </div>
-    `)
+    photos.push({ imageUrl, width, height })
   }
 
-  if (!fragments.length) {
+  if (!photos.length) {
     return ''
   }
 
-  const layoutClass = fragments.length % 2 === 0 ? 'image-list-even' : 'image-list-odd'
-  return `<div class="image-list-container ${layoutClass}">${fragments.join('')}</div>`
+  // Single image: keep existing per-image popover behavior
+  if (photos.length === 1) {
+    const { imageUrl, width, height } = photos[0]
+    const popoverId = `modal-${id}-0`
+    const safePreviewLabel = escapeHtmlAttribute(title ? `Open image preview: ${title}` : 'Open image preview')
+    return `
+      <div class="image-list-container image-list-odd">
+        <button
+          type="button"
+          class="image-preview-button image-preview-wrap"
+          popovertarget="${popoverId}"
+          popovertargetaction="show"
+          aria-label="${safePreviewLabel}"
+        >
+          <img src="${staticProxy + imageUrl}" alt="${safeTitle}" width="${width}" height="${height}" loading="${loading}" />
+        </button>
+        <div class="modal" id="${popoverId}" popover aria-label="Image preview">
+          <button type="button" class="modal__backdrop" popovertarget="${popoverId}" popovertargetaction="hide" aria-label="${safeCloseLabel}"></button>
+          <button type="button" class="modal__close" popovertarget="${popoverId}" popovertargetaction="hide" aria-label="${safeCloseLabel}">&times;</button>
+          <div class="modal__surface">
+            <img class="modal-img" src="${staticProxy + imageUrl}" alt="${safeTitle}" width="${width}" height="${height}" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    `
+  }
+
+  // Multiple images: single shared gallery modal with thumbnail grid
+  const galleryId = `gallery-${id}`
+  const count = photos.length
+  // 2 or 4 photos → 2-column; everything else → 3-column (matches Telegram)
+  const colClass = count === 2 || count === 4 ? 'image-gallery-2col' : 'image-gallery-3col'
+
+  const thumbnailButtons = photos.map(({ imageUrl, width, height }, i) => {
+    const safeGalleryLabel = escapeHtmlAttribute(`Open image gallery, image ${i + 1} of ${count}`)
+    return `
+      <button
+        type="button"
+        class="image-preview-button image-preview-wrap image-gallery__trigger"
+        popovertarget="${galleryId}"
+        popovertargetaction="show"
+        data-gallery="${galleryId}"
+        data-index="${i}"
+        aria-label="${safeGalleryLabel}"
+      >
+        <img class="gallery__thumb" src="${staticProxy + imageUrl}" alt="${safeTitle}" width="${width}" height="${height}" loading="${loading}" />
+      </button>`
+  }).join('')
+
+  const galleryImages = photos.map(({ imageUrl, width, height }, i) =>
+    `<img class="modal-img gallery__img" src="${staticProxy + imageUrl}" alt="${safeTitle}" width="${width}" height="${height}" loading="lazy"${i > 0 ? ' hidden' : ''} />`,
+  ).join('')
+
+  return `
+    <div class="image-gallery ${colClass}">${thumbnailButtons}
+    </div>
+    <div class="modal image-gallery__modal" id="${galleryId}" data-current="0" popover aria-label="Image gallery">
+      <button type="button" class="modal__backdrop" popovertarget="${galleryId}" popovertargetaction="hide" aria-label="${safeCloseLabel}"></button>
+      <button type="button" class="modal__close" popovertarget="${galleryId}" popovertargetaction="hide" aria-label="${safeCloseLabel}">&times;</button>
+      <button type="button" class="gallery__nav gallery__prev" aria-label="Previous image">&#8249;</button>
+      <button type="button" class="gallery__nav gallery__next" aria-label="Next image">&#8250;</button>
+      <div class="modal__surface">${galleryImages}</div>
+      <p class="gallery__counter" aria-live="polite">1 / ${count}</p>
+    </div>
+  `
 }
 
 function getVideo($: CheerioAPI, message: MessageSelection, options: IndexedStaticProxyOptions): string {
