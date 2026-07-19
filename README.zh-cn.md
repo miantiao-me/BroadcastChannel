@@ -27,7 +27,7 @@
 - [新闻在花频道](https://tg.istore.app/)
 - [ALL About RSS](https://blog.rss.tips/)
 - [Charles Chin's Whisper](https://memo.eallion.com/)
-- [PlayStation 新闻转发](https://playstationnews.pages.dev)
+- [PlayStation 新闻转发](https://playstation.hwaet.workers.dev)
 - [Yu's Life](https://daily.pseudoyu.com/)
 - [Leslie 和朋友们](https://tg.imlg.co/)
 - [OKHK 分享](https://tg.okhk.net/)
