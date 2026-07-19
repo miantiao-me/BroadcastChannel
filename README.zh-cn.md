@@ -96,6 +96,8 @@ Cloudflare Pages SSR 在当前 Astro 6 + @astrojs/cloudflare v13 下不受支持
 
 项目支持 EdgeOne，并会通过 std-env 的 `edgeone_pages` provider 或平台提供的 `EDGEONE_PROJECT_ID`/`EO_MAKERS` 变量自动检测。仅在需要覆盖自动适配器检测时设置 `SERVER_ADAPTER`。
 
+**Vercel 注意事项：** 此项目需要 pnpm 11 和 Node.js 22+。`vercel.json` 已设置 `installCommand` 为 `corepack pnpm install`，`package.json` 已声明 `engines.node` 为 `22.x`，Vercel 会通过 Corepack 使用正确的 pnpm 版本。如果构建仍然报 `packages field missing or empty`，请在 Vercel 项目设置 → Environment Variables 中添加环境变量 `ENABLE_EXPERIMENTAL_COREPACK=1` 以启用 Vercel 官方 Corepack 集成。
+
 Cloudflare Workers 最小命令：
 
 ```bash
@@ -164,28 +166,7 @@ NAVS=Title1,URL1;Title2,URL2;Title3,URL3;
 ## 搜索
 GOOGLE_SEARCH_SITE=memo.miantiao.me
 
-<<<<<<< HEAD
-## 启用标签页, 标签使用英文逗号分割
-TAGS=标签A,标签B,标签C
 
-## 展示评论
-COMMENTS=true
-
-## 链接页面中的超链接, 使用英文逗号和分号分割
-LINKS=Title1,URL1;Title2,URL3;Title3,URL3;
-
-## 侧边栏导航项, 使用英文逗号和分号分割
-NAVS=Title1,URL1;Title2,URL3;Title3,URL3;
-
-## 启用 RSS 美化
-RSS_BEAUTIFY=true
-
-## 将文本内容显示在媒体资源（图片、视频等）上方
-TEXT_FIRST=false
-
-## 启用健康信息展示（心率和位置信息）
-HEALTH_INFO=false
-=======
 ## 高级（一般无需修改）
 TELEGRAM_HOST=telegram.dog
 STATIC_PROXY=
@@ -193,7 +174,6 @@ STATIC_PROXY=
 SERVER_ADAPTER=
 # 在默认白名单基础上追加代理目标；仅填写域名，以英文逗号分隔（不含协议、端口或路径）。
 TARGET_WHITELIST=a.com,b.com
->>>>>>> upstream/main
 ```
 
 ## 🎨 主题

@@ -1,4 +1,6 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "corepack pnpm install",
   "rewrites": [
     { "source": "/static/:path*", "destination": "/api/static?path=:path*" }
   ]

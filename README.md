@@ -96,6 +96,8 @@ For detailed tutorials, see [Deploy your Astro site](https://docs.astro.build/en
 
 EdgeOne is supported and detected automatically through std-env's `edgeone_pages` provider or the platform-provided `EDGEONE_PROJECT_ID`/`EO_MAKERS` variables. Set `SERVER_ADAPTER` only when you need to override automatic adapter detection.
 
+**Vercel note:** This project requires pnpm 11 and Node.js 22+. The `vercel.json` already sets `installCommand` to `corepack pnpm install` and `package.json` pins `engines.node` to `22.x`, so Vercel will use the correct pnpm version via Corepack. If the build still fails with `packages field missing or empty`, add the environment variable `ENABLE_EXPERIMENTAL_COREPACK=1` in your Vercel Project Settings → Environment Variables to enable Vercel's official Corepack integration.
+
 Cloudflare Workers minimal commands:
 
 ```bash
@@ -164,28 +166,6 @@ NAVS=Title1,URL1;Title2,URL2;Title3,URL3;
 ## Search
 GOOGLE_SEARCH_SITE=memo.miantiao.me
 
-<<<<<<< HEAD
-## Enable tags page, separate tags with commas
-TAGS=tag1,tag2,tag3
-
-## Show comments
-COMMENTS=true
-
-## List of links in the Links page, Separate using commas and semicolons
-LINKS=Title1,URL1;Title2,URL3;Title3,URL3;
-
-## Sidebar Navigation Item, Separate using commas and semicolons
-NAVS=Title1,URL1;Title2,URL3;Title3,URL3;
-
-## Enable RSS beautify
-RSS_BEAUTIFY=true
-
-## Display text content above media resources (images, videos, etc.)
-TEXT_FIRST=false
-
-## Enable health information display (heart rate and location)
-HEALTH_INFO=false
-=======
 ## Advanced (usually leave as-is)
 TELEGRAM_HOST=telegram.dog
 STATIC_PROXY=
@@ -193,7 +173,6 @@ STATIC_PROXY=
 SERVER_ADAPTER=
 # Append hostname-only proxy targets to the defaults, separated by commas (no protocol, port, or path).
 TARGET_WHITELIST=a.com,b.com
->>>>>>> upstream/main
 ```
 
 ## 🎨 Themes
