@@ -96,7 +96,7 @@ Cloudflare Pages SSR 在当前 Astro 6 + @astrojs/cloudflare v13 下不受支持
 
 项目支持 EdgeOne，并会通过 std-env 的 `edgeone_pages` provider 或平台提供的 `EDGEONE_PROJECT_ID`/`EO_MAKERS` 变量自动检测。仅在需要覆盖自动适配器检测时设置 `SERVER_ADAPTER`。
 
-**Vercel 注意事项：** 此项目需要 pnpm 11 和 Node.js 22+。`vercel.json` 已设置 `installCommand` 为 `corepack pnpm install`，`package.json` 已声明 `engines.node` 为 `22.x`，Vercel 会通过 Corepack 使用正确的 pnpm 版本。如果构建仍然报 `packages field missing or empty`，请在 Vercel 项目设置 → Environment Variables 中添加环境变量 `ENABLE_EXPERIMENTAL_COREPACK=1` 以启用 Vercel 官方 Corepack 集成。
+**Vercel 注意事项：** 此项目需要 pnpm 11 和 Node.js 22+。Vercel 会根据 lockfile 自动检测到 pnpm@9，但 pnpm@9 无法解析本项目 `pnpm-workspace.yaml` 的 pnpm@11 格式（无 `packages` 字段），导致任何命令都报 `packages field missing or empty`。`vercel.json` 已将 `installCommand` 和 `buildCommand` 都强制通过 `corepack pnpm` 执行，Corepack 会读取 `package.json` 的 `packageManager: pnpm@11.13.0` 字段使用正确的 pnpm 版本。`engines.node` 字段将 Node.js 锁定为 `22.x`。无需在 Vercel 控制台做任何额外配置。
 
 Cloudflare Workers 最小命令：
 

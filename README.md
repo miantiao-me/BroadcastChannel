@@ -96,7 +96,7 @@ For detailed tutorials, see [Deploy your Astro site](https://docs.astro.build/en
 
 EdgeOne is supported and detected automatically through std-env's `edgeone_pages` provider or the platform-provided `EDGEONE_PROJECT_ID`/`EO_MAKERS` variables. Set `SERVER_ADAPTER` only when you need to override automatic adapter detection.
 
-**Vercel note:** This project requires pnpm 11 and Node.js 22+. The `vercel.json` already sets `installCommand` to `corepack pnpm install` and `package.json` pins `engines.node` to `22.x`, so Vercel will use the correct pnpm version via Corepack. If the build still fails with `packages field missing or empty`, add the environment variable `ENABLE_EXPERIMENTAL_COREPACK=1` in your Vercel Project Settings → Environment Variables to enable Vercel's official Corepack integration.
+**Vercel note:** This project requires pnpm 11 and Node.js 22+. Vercel auto-detects pnpm@9 from the lockfile, but pnpm@9 cannot parse this project's `pnpm-workspace.yaml` (pnpm@11 format without a `packages` field), causing `packages field missing or empty` on any command. The `vercel.json` forces both `installCommand` and `buildCommand` through `corepack pnpm`, which respects the `packageManager: pnpm@11.13.0` field in `package.json`. The `engines.node` field pins Node.js to `22.x`. No dashboard configuration is required.
 
 Cloudflare Workers minimal commands:
 
