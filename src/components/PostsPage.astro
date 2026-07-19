@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PostEntry from '../components/PostEntry.astro'
+import type { ChannelInfo, SeoMeta } from '../types'
+
+const { SITE_URL } = Astro.locals
+const {
+  channel,
+  before: showOlder = true,
+  after: showNewer = true,
+  isDetail = false,
+  pageClass,
+  pageHeading,
+  pageSeo,
+  pageType,
+} = Astro.props as {
+  channel: ChannelInfo
+  before?: boolean
+  after?: boolean
+  isDetail?: boolean
+  pageClass?: string
+  pageHeading?: string
+  pageSeo?: SeoMeta
+  pageType: 'home' | 'post' | 'page'
+}
+const posts = channel.posts ?? []
+
+const beforeCursor = posts[posts.length - 1]?.id
+const afterCursor = posts[0]?.id
+const hasOlderPosts = showOlder && beforeCursor && Number(beforeCursor) > 1
+const hasNewerPosts = showNewer && afterCursor
+---
+
+<BaseLayout channel={channel} pageClass={pageClass} seo={pageSeo} pageType={pageType}>
+  {pageHeading ? <h1 class="sr-only">{pageHeading}</h1> : null}
+  <slot name="header" />
+  <ol class="posts-feed" aria-label={isDetail ? 'Post' : 'Posts'}>
+    {
+      posts.map((post) => (
+        <li>
+          <PostEntry post={post} isDetail={isDetail} channelAvatar={channel.avatar} channelTitle={channel.title} />
+        </li>
+      ))
+    }
+  </ol>
+
+  {
+    hasOlderPosts || hasNewerPosts ? (
+      <nav class="pagination" aria-label="Pagination">
+        {hasOlderPosts ? (
+          <a href={`${SITE_URL}before/${beforeCursor}`} title="Older posts" aria-label="Older posts" class="older">
+            <span aria-hidden="true">←</span>
+          </a>
+        ) : null}
+        {hasNewerPosts ? (
+          <a href={`${SITE_URL}after/${afterCursor}`} title="Newer posts" aria-label="Newer posts" class="newer">
+            <span aria-hidden="true">→</span>
+          </a>
+        ) : null}
+      </nav>
+    ) : null
+  }
+</BaseLayout>

@@ -1,0 +1,72 @@
+@layer components {
+  .highlight,
+  .code {
+    overflow-x: auto;
+    margin-block: 1em;
+    padding: 1px 15px;
+    border-radius: 3px;
+    background: var(--code-background-color);
+    color: var(--code-color);
+  }
+
+  .highlight pre,
+  .code pre {
+    margin: 0;
+    padding: 0;
+  }
+
+  .content pre.code {
+    margin-block: 1em;
+    padding: 1px 15px;
+  }
+
+  .content pre[class*='language-'],
+  .content code[class*='language-'] {
+    background: var(--code-background-color);
+    color: var(--code-color);
+    text-shadow: none;
+  }
+
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata,
+  .token.punctuation {
+    color: var(--code-muted-color);
+  }
+
+  .token.property,
+  .token.tag,
+  .token.boolean,
+  .token.number,
+  .token.constant,
+  .token.symbol,
+  .token.deleted,
+  .token.function,
+  .token.class-name {
+    color: var(--code-alt-accent-color);
+  }
+
+  .token.selector,
+  .token.attr-name,
+  .token.string,
+  .token.char,
+  .token.builtin,
+  .token.inserted,
+  .token.atrule,
+  .token.attr-value,
+  .token.keyword {
+    color: var(--code-accent-color);
+  }
+
+  .token.operator,
+  .token.entity,
+  .token.url,
+  .language-css .token.string,
+  .style .token.string,
+  .token.regex,
+  .token.important,
+  .token.variable {
+    color: var(--code-color);
+  }
+}

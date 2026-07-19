@@ -1,0 +1,71 @@
+@layer components {
+  .content {
+    img:not(.tg-emoji):not(.sticker):not(.link_preview_image):not(.modal-img) {
+      width: calc(100% - var(--box-margin));
+      max-width: calc(100% - 1px);
+      max-height: initial;
+    }
+
+    .image-list-container {
+      @apply grid grid-cols-2;
+      grid-template-rows: masonry;
+
+      &.image-list-odd {
+        :first-child {
+          grid-column: 1 / 3;
+        }
+      }
+    }
+
+    .image-list-container img {
+      @apply mb-0;
+    }
+
+    .tgme_widget_message_video,
+    .tgme_widget_message_roundvideo {
+      @apply aspect-square;
+    }
+
+    .tgme_widget_message_sticker {
+      @apply block;
+    }
+
+    &:has(.tgme_widget_message_user_photo) {
+      @apply flex;
+
+      .tgme_widget_message_user_photo {
+        @apply h-15 w-15;
+      }
+    }
+
+    .tgme_widget_message_voice {
+      @apply !block;
+    }
+
+    .tgme_widget_message_video_wrap {
+      @apply hidden;
+    }
+
+    .tgme_widget_message_location_wrap {
+      @apply block;
+
+      .tgme_widget_message_location {
+        @apply bg-cover bg-center bg-no-repeat pt-[50%];
+      }
+    }
+
+    .emoji {
+      @apply not-italic;
+      margin-right: 2px;
+    }
+
+    .tg-emoji {
+      @apply h-[1.15em] w-[1.15em] align-[-0.15em];
+    }
+
+    .sticker {
+      @apply h-auto w-auto border-0 shadow-none;
+      max-width: min(256px, calc(100% - 1px));
+    }
+  }
+}

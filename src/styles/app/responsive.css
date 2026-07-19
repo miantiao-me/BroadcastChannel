@@ -1,0 +1,86 @@
+@layer components {
+  @media (max-width: 37.5rem) {
+    .site-header {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: flex-start;
+    }
+
+    .site-header > .title > h1 {
+      font-size: 1.2em;
+    }
+
+    .channel-avatar {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .social-links {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+
+    .site-navigation {
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .desktop-search {
+      display: none;
+    }
+
+    .mobile-search {
+      display: block;
+      margin-left: auto;
+    }
+
+    .mobile-search[open] {
+      width: 100%;
+    }
+
+    .mobile-search summary {
+      display: flex;
+      width: 2.75rem;
+      height: 2.75rem;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .mobile-search summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-search summary svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .mobile-search form {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .mobile-search .search-input {
+      font-size: 16px;
+    }
+  }
+}
+
+@layer utilities {
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms;
+      animation-iteration-count: 1;
+      scroll-behavior: auto;
+      transition-duration: 0.01ms;
+    }
+  }
+}

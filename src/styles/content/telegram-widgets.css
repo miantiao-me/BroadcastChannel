@@ -1,0 +1,49 @@
+@layer components {
+  .content {
+    .tgme_widget_message_forwarded_from {
+      display: block;
+      margin-block: 0 0.625rem;
+      color: var(--muted-color);
+      font-size: 0.8125em;
+      font-weight: 400;
+      line-height: 1.5;
+
+      > a {
+        font-weight: 600;
+      }
+    }
+
+    ul:has(> li > input[type='checkbox']:disabled) {
+      @apply ps-0;
+    }
+
+    li > input[type='checkbox']:disabled {
+      @apply hidden;
+    }
+
+    li:has(> input[type='checkbox']:disabled) {
+      @apply ml-0 list-none;
+    }
+
+    li:has(> input[type='checkbox']:not(:checked):disabled)::before {
+      @apply mt-0.5 inline-block h-4 w-5 bg-[length:1em_1em] bg-no-repeat align-text-top [filter:var(--icon-hover-filter)];
+      background-image: url('../../assets/circle.svg');
+      content: '';
+    }
+
+    li:has(> input[type='checkbox']:checked:disabled)::before {
+      @apply mt-px inline-block h-4 w-5 bg-[length:1em_1em] bg-no-repeat align-text-top;
+      background-image: url('../../assets/checkmark.circle.fill.svg');
+      content: '';
+      pointer-events: all;
+    }
+
+    .tgme_widget_message_poll_options {
+      @apply block;
+
+      .tgme_widget_message_poll_option_percent {
+        @apply float-left mr-2;
+      }
+    }
+  }
+}

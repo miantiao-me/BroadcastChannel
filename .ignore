@@ -1,0 +1,12 @@
+!.slim/deepwork/
+!.slim/deepwork/**
+
+# BEGIN oh-my-opencode-slim clonedeps
+!.slim/
+!.slim/clonedeps.json
+!.slim/clonedeps/
+!.slim/clonedeps/repos/
+!.slim/clonedeps/repos/**
+.slim/clonedeps/repos/**/.git/
+.slim/clonedeps/repos/**/.git/**
+# END oh-my-opencode-slim clonedeps

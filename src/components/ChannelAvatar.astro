@@ -1,0 +1,19 @@
+---
+import voidFile from '../assets/void.png'
+import { getStaticProxy } from '../lib/env'
+
+const { alt = '', channel, class: className, fetchpriority, height, loading = 'lazy', width } = Astro.props
+
+const staticProxy = getStaticProxy(import.meta.env)
+const src = channel?.avatar?.startsWith('http') ? staticProxy + channel.avatar : voidFile.src
+---
+
+<img
+  src={src}
+  alt={alt}
+  loading={loading}
+  fetchpriority={fetchpriority}
+  width={width}
+  height={height}
+  class={className}
+/>

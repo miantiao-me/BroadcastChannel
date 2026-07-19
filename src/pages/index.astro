@@ -1,8 +1,8 @@
 ---
-import List from '../components/list.astro'
+import PostsPage from '../components/PostsPage.astro'
 import { getChannelInfo } from '../lib/telegram'
 
-const channel = await getChannelInfo(Astro)
+const channel = await getChannelInfo()
 ---
 
-<List channel={channel} after={false} />
+<PostsPage channel={channel} after={false} pageClass="feed" pageHeading={channel.title} pageType="home" />

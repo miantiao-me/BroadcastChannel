@@ -1,0 +1,76 @@
+---
+import type { NavItem } from '../types'
+import SearchForm from './SearchForm.astro'
+
+const {
+  channelTitle,
+  currentPathname,
+  googleSearchSite,
+  linksPathname,
+  navs = [],
+  searchAction,
+  showLinks,
+  showTags,
+  siteRootPathname,
+  siteUrl,
+  tagsPathname,
+} = Astro.props as {
+  channelTitle?: string
+  currentPathname: string
+  googleSearchSite?: string
+  linksPathname: string
+  navs?: NavItem[]
+  searchAction: string
+  showLinks?: boolean
+  showTags?: boolean
+  siteRootPathname: string
+  siteUrl: string
+  tagsPathname: string
+}
+
+const primaryNavItems = [
+  {
+    href: siteUrl,
+    pathname: siteRootPathname,
+    title: 'Home',
+  },
+  showTags && {
+    href: `${siteUrl}tags`,
+    pathname: tagsPathname,
+    title: 'Tags',
+  },
+  showLinks && {
+    href: `${siteUrl}links`,
+    pathname: linksPathname,
+    title: 'Links',
+  },
+].filter((item): item is { href: string; pathname: string; title: string } => Boolean(item))
+---
+
+<nav class="site-navigation" aria-label="Primary navigation">
+  <ul>
+    {
+      primaryNavItems.map((nav) => (
+        <li>
+          <a
+            href={nav.href}
+            title={nav.title === 'Home' ? channelTitle : nav.title}
+            aria-current={currentPathname === nav.pathname ? 'page' : undefined}
+          >
+            {nav.title}
+          </a>
+        </li>
+      ))
+    }
+    {
+      navs.map((nav) => (
+        <li>
+          <a href={nav.href} title={nav.title} target="_blank" rel="noopener noreferrer">
+            {nav.title}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <SearchForm action={searchAction} googleSearchSite={googleSearchSite} />
+</nav>

@@ -1,0 +1,73 @@
+@view-transition {
+  navigation: auto;
+}
+
+@theme {
+  --font-sans: var(--font-secondary);
+  --breakpoint-sm: 37.5rem;
+  --color-paper: var(--background-color);
+  --color-ink: var(--text-color);
+  --color-heading: var(--heading-color);
+  --color-accent: var(--accent-color);
+  --color-surface: var(--surface-color);
+  --color-code: var(--code-background-color);
+  --color-muted: var(--muted-color);
+  --color-link: var(--link-color);
+  --color-link-hover: var(--link-hover-color);
+  --color-line: var(--border-color);
+  --color-footer: var(--muted-color);
+  --shadow-soft: none;
+  --radius-panel: 0;
+  --radius-chip: 0;
+  --radius-media: 0;
+}
+
+@layer base {
+  :root {
+    --width: 800px;
+    --body-padding-inline: 20px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --code-background-color: #f2f2f2;
+    --code-color: #222;
+    --blockquote-color: #222;
+
+    --accent-color: var(--link-color);
+    --border-color: color-mix(in srgb, var(--text-color) 22%, transparent);
+    --link-hover-color: color-mix(in srgb, var(--link-color) 72%, var(--heading-color));
+    --muted-color: color-mix(in srgb, var(--text-color) 74%, transparent);
+    --surface-color: var(--background-color);
+    --code-muted-color: color-mix(in srgb, var(--code-color) 72%, var(--code-background-color));
+    --code-accent-color: color-mix(in srgb, var(--link-color) 75%, var(--code-color));
+    --code-alt-accent-color: color-mix(in srgb, var(--visited-color) 65%, var(--code-color));
+    --reaction-paid-color: #6b5000;
+    --reaction-paid-border-color: color-mix(in srgb, var(--reaction-paid-color) 38%, transparent);
+    --reaction-paid-background-color: color-mix(in srgb, #d5a000 14%, var(--background-color));
+    --box-margin: 10px;
+    --back-to-top-offset: 1.25rem;
+    --icon-hover-filter: grayscale(1) opacity(0.8);
+    --icon-secondary-filter: grayscale(1) opacity(0.5);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --code-background-color: #000;
+      --code-color: #ddd;
+      --blockquote-color: #ccc;
+      --reaction-paid-color: #f3cc65;
+      --reaction-paid-border-color: color-mix(in srgb, var(--reaction-paid-color) 52%, transparent);
+      --reaction-paid-background-color: color-mix(in srgb, var(--reaction-paid-color) 14%, var(--background-color));
+    }
+  }
+}

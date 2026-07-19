@@ -1,39 +1,36 @@
 ---
-import { getEnv } from '../../lib/env'
-import voidFile from '../../assets/void.png'
-import List from '../../components/list.astro'
-import { getChannelInfo } from '../../lib/telegram'
+import PostsPage from '../../components/PostsPage.astro'
+import { getChannelInfo, getChannelPost } from '../../lib/telegram'
 
-const { SITE_URL } = Astro.locals
+const channelInfo = await getChannelInfo()
 
-const channelInfo = await getChannelInfo(Astro)
+if (!Astro.params.id) {
+  return Astro.redirect('/')
+}
 
-const post = await getChannelInfo(Astro, {
-  type: 'post',
-  id: Astro.params.id,
-})
+const post = channelInfo.posts.find((item) => item.id === Astro.params.id) ?? (await getChannelPost(Astro.params.id))
+
+if (!post) {
+  return new Response('Not Found', {
+    status: 404,
+    headers: {
+      'Cache-Control': 'public, max-age=300, s-maxage=300',
+    },
+  })
+}
 
 const channel = {
   ...(channelInfo || {}),
   posts: [post],
-  seo: post,
 }
-
-const staticProxy = getEnv(import.meta.env, Astro, 'STATIC_PROXY') ?? '/static/'
 ---
 
-<List channel={channel} before={false} after={false} isItem={true}>
-  <div slot="header" id="breadcrumb">
-    <img
-      src={channel?.avatar?.startsWith('http') ? staticProxy + channel?.avatar : voidFile.src}
-      alt={channel?.title}
-      loading="eager"
-      class="breadcrumb-avatar"
-    />
-    <div class="breadcrumb-title">
-      <a href={SITE_URL} class="site-title" title={channel?.title}>
-        {channel.title}
-      </a>
-    </div>
-  </div>
-</List>
+<PostsPage
+  channel={channel}
+  before={false}
+  after={false}
+  isDetail={true}
+  pageHeading={post.title || channel.title}
+  pageSeo={post}
+  pageType="post"
+/>

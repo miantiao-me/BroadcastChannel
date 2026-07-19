@@ -1,0 +1,86 @@
+---
+import '../styles/app.css'
+import { SEO } from 'astro-seo'
+import BackToTop from '../components/BackToTop.astro'
+import SiteHeader from '../components/SiteHeader.astro'
+import SiteNavigation from '../components/SiteNavigation.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import { getEnv, parseDelimitedItems } from '../lib/env'
+import { getPageSeo } from '../lib/seo'
+import type { ChannelInfo, SeoMeta } from '../types'
+
+const { SITE_URL, RSS_URL, RSS_PREFIX } = Astro.locals
+const { channel, pageClass, pageType, seo } = Astro.props as {
+  channel: ChannelInfo
+  pageClass?: string
+  pageType: 'home' | 'post' | 'page'
+  seo?: SeoMeta
+}
+
+const locale = getEnv(import.meta.env, 'LOCALE')
+const twitter = getEnv(import.meta.env, 'TWITTER')
+const { currentPathname, hasCustomTitle, linksPathname, seoParams, siteRootPathname, siteTitle, tagsPathname } =
+  getPageSeo({
+    channel,
+    locale,
+    seo,
+    siteUrl: SITE_URL,
+    url: Astro.url,
+  })
+
+const GOOGLE_SEARCH_SITE = getEnv(import.meta.env, 'GOOGLE_SEARCH_SITE')
+const searchAction = GOOGLE_SEARCH_SITE ? 'https://www.google.com/search' : `${SITE_URL}search/result`
+
+const HEADER_INJECT = getEnv(import.meta.env, 'HEADER_INJECT')
+const FOOTER_INJECT = getEnv(import.meta.env, 'FOOTER_INJECT')
+const TAGS = getEnv(import.meta.env, 'TAGS')
+const LINKS = getEnv(import.meta.env, 'LINKS')
+const navs = parseDelimitedItems(getEnv(import.meta.env, 'NAVS'))
+
+const skipLinkText = 'Skip to main content'
+---
+
+<!doctype html>
+<html lang={locale ?? 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="alternate" type="application/rss+xml" title={`${RSS_PREFIX}${channel?.title}`} href={RSS_URL} />
+    <SEO
+      titleTemplate={hasCustomTitle ? `%s | ${siteTitle}` : undefined}
+      titleDefault={siteTitle || seoParams.description}
+      twitter={{
+        card: 'summary_large_image',
+        creator: twitter ? `@${twitter}` : undefined,
+      }}
+      {...seoParams}
+    />
+    <Fragment set:html={HEADER_INJECT} />
+  </head>
+
+  <body class:list={[pageType, pageClass]}>
+    <a href="#main-content" class="skip-link">{skipLinkText}</a>
+    <SiteHeader channel={channel}>
+      <SiteNavigation
+        channelTitle={channel?.title}
+        currentPathname={currentPathname}
+        googleSearchSite={GOOGLE_SEARCH_SITE}
+        linksPathname={linksPathname}
+        navs={navs}
+        searchAction={searchAction}
+        showLinks={Boolean(LINKS)}
+        showTags={Boolean(TAGS)}
+        siteRootPathname={siteRootPathname}
+        siteUrl={SITE_URL}
+        tagsPathname={tagsPathname}
+      />
+    </SiteHeader>
+    <main id="main-content">
+      <slot />
+    </main>
+    <SiteFooter />
+    <BackToTop />
+    <Fragment set:html={FOOTER_INJECT} />
+  </body>
+</html>

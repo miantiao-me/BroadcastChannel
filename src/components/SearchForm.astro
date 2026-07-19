@@ -1,0 +1,25 @@
+---
+import SearchField from './SearchField.astro'
+
+const { action, googleSearchSite } = Astro.props
+
+const searchLabelText = 'Search'
+const searchIconPath = 'm14.2 14.2 3.3 3.3M8.8 15.1a6.3 6.3 0 1 1 0-12.6 6.3 6.3 0 0 1 0 12.6Z'
+---
+
+<details class="mobile-search">
+  <summary>
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d={searchIconPath} stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+      ></path>
+    </svg>
+    <span class="sr-only">{searchLabelText}</span>
+  </summary>
+  <form action={action} method="get" role="search" aria-label="Site search">
+    <SearchField id="mobile-search-query" googleSearchSite={googleSearchSite} />
+  </form>
+</details>
+
+<form class="desktop-search" action={action} method="get" role="search" aria-label="Site search">
+  <SearchField id="desktop-search-query" googleSearchSite={googleSearchSite} />
+</form>

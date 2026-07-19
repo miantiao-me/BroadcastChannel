@@ -1,0 +1,31 @@
+---
+const { id, googleSearchSite } = Astro.props as {
+  id: string
+  googleSearchSite?: string
+}
+
+const searchLabelText = 'Search'
+const searchIconPath = 'm14.2 14.2 3.3 3.3M8.8 15.1a6.3 6.3 0 1 1 0-12.6 6.3 6.3 0 0 1 0 12.6Z'
+---
+
+{googleSearchSite ? <input type="hidden" name="as_sitesearch" value={googleSearchSite} /> : null}
+<label class="sr-only" for={id}>{searchLabelText}</label>
+<div class="search-field">
+  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+    <path d={searchIconPath} stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+    ></path>
+  </svg>
+  <input
+    id={id}
+    class="search-input"
+    type="search"
+    name="q"
+    placeholder="Search…"
+    autocomplete="off"
+    inputmode="search"
+    spellcheck={false}
+  />
+  <button class="search-submit" type="submit" aria-label="Submit search">
+    <span aria-hidden="true">↵</span>
+  </button>
+</div>

@@ -1,35 +1,17 @@
 ---
-import Layout from '../layouts/base.astro'
-import Header from '../components/header.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import DirectorySection from '../components/DirectorySection.astro'
 import { getChannelInfo } from '../lib/telegram'
-import { getEnv } from '../lib/env'
+import { getEnv, parseCsvList } from '../lib/env'
 
-const channel = await getChannelInfo(Astro)
-
-channel.seo = {
-  title: 'Tags',
-}
-
-const tags = (getEnv(import.meta.env, Astro, 'TAGS') || '').split(',')
+const channel = await getChannelInfo()
+const pageSeo = { title: 'Tags' }
+const items = parseCsvList(getEnv(import.meta.env, 'TAGS')).map((tag) => ({
+  href: `/search/result?q=${encodeURIComponent(`#${tag}`)}`,
+  label: tag,
+}))
 ---
 
-<Layout channel={channel} id="main-container">
-  <slot name="header">
-    <Header channel={channel} />
-  </slot>
-
-  <div class="section-title">Tags</div>
-
-  <div class="tag-cloud">
-    {
-      tags.map((tag: string) => (
-        <div class="tag-cloud-item">
-          <a href={`/search/%23${tag}`} class="tag">
-            {tag}
-          </a>
-          {/* <span class="tag-cloud-item-count">0</span> */}
-        </div>
-      ))
-    }
-  </div>
-</Layout>
+<BaseLayout channel={channel} seo={pageSeo} pageType="page">
+  <DirectorySection id="tags" title="Tags" items={items} />
+</BaseLayout>

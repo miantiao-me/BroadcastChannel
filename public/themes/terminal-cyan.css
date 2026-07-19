@@ -1,0 +1,13 @@
+@import './terminal-base.css';
+
+:root {
+  --terminal-background: #071316;
+  --terminal-foreground: #d7e7e9;
+  --terminal-accent: #56d4e8;
+  --terminal-muted: #95a9ac;
+  --terminal-border: #63777a;
+  --terminal-surface: #0c2024;
+  --terminal-surface-strong: #113139;
+  --terminal-visited: #c4b5fd;
+  --terminal-paid: #f3cc65;
+}

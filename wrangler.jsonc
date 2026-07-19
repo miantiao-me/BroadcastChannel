@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "broadcast-channel",
+  // Astro's Cloudflare adapter rewrites this to dist/server/wrangler.json after build.
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-06-13",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "keep_vars": true,
+  "cache": {
+    "enabled": true
+  },
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

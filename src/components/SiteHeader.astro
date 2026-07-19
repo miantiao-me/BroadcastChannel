@@ -1,0 +1,65 @@
+---
+import { Icon } from 'astro-icon/components'
+import ChannelAvatar from './ChannelAvatar.astro'
+import { getBooleanEnv, getEnv } from '../lib/env'
+import { sanitizeContentHtml } from '../lib/sanitize'
+import { buildSocialLinks } from '../lib/social'
+
+const { SITE_URL, RSS_URL } = Astro.locals
+const { channel } = Astro.props
+
+const PODCAST = getEnv(import.meta.env, 'PODCAST')
+const TWITTER = getEnv(import.meta.env, 'TWITTER')
+const GITHUB = getEnv(import.meta.env, 'GITHUB')
+const TELEGRAM = getEnv(import.meta.env, 'TELEGRAM')
+const DISCORD = getEnv(import.meta.env, 'DISCORD')
+const MASTODON = getEnv(import.meta.env, 'MASTODON')
+const BLUESKY = getEnv(import.meta.env, 'BLUESKY')
+
+const hideDescription = getBooleanEnv(import.meta.env, 'HIDE_DESCRIPTION')
+const descriptionHtml = channel?.descriptionHTML ? sanitizeContentHtml(channel.descriptionHTML) : ''
+const homeLabel = channel?.title ? `Home — ${channel.title}` : 'Home'
+
+const socialLinks = buildSocialLinks({
+  rssUrl: RSS_URL,
+  podcast: PODCAST,
+  twitter: TWITTER,
+  github: GITHUB,
+  telegram: TELEGRAM,
+  discord: DISCORD,
+  mastodon: MASTODON,
+  bluesky: BLUESKY,
+})
+---
+
+<header class="site-header">
+  <a href={SITE_URL} class="avatar-link" title={channel?.title} aria-label={homeLabel}>
+    <ChannelAvatar
+      channel={channel}
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      width="48"
+      height="48"
+      class="channel-avatar"
+    />
+  </a>
+  <a href={SITE_URL} class="title" title={channel?.title}>
+    <h1>{channel?.title}</h1>
+  </a>
+  <div class="social-links" role="group" aria-label="Channel links">
+    {
+      socialLinks.map((item) => (
+        <a href={item.href} title={item.title} target="_blank" rel={item.rel} type={item.type} aria-label={item.label}>
+          <Icon name={item.icon} aria-hidden="true" />
+        </a>
+      ))
+    }
+  </div>
+  {
+    !hideDescription && descriptionHtml.length > 0 && (
+      <div class="channel-description content" set:html={descriptionHtml} />
+    )
+  }
+  <slot />
+</header>

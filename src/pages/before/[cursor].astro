@@ -1,14 +1,14 @@
 ---
-import List from '../../components/list.astro'
+import PostsPage from '../../components/PostsPage.astro'
 import { getChannelInfo } from '../../lib/telegram'
+import type { SeoMeta } from '../../types'
 
-const channel = await getChannelInfo(Astro, {
+const channel = await getChannelInfo({
   before: Astro.params.cursor,
 })
-
-channel.seo = {
+const pageSeo: SeoMeta = {
   noindex: true,
 }
 ---
 
-<List channel={channel} />
+<PostsPage channel={channel} pageClass="feed" pageHeading={channel.title} pageSeo={pageSeo} pageType="home" />

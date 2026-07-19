@@ -1,0 +1,117 @@
+---
+import { getBooleanEnv, getEnv } from '../lib/env'
+import { sanitizeContentHtml } from '../lib/sanitize'
+import { formatPostTime, getReactionLabel, getTagHref, paidReactionClass } from '../lib/post-ui'
+import type { Post } from '../types'
+
+const locale = getEnv(import.meta.env, 'LOCALE')
+const timezone = getEnv(import.meta.env, 'TIMEZONE')
+
+const { SITE_URL } = Astro.locals
+const { post, isDetail, channelAvatar, channelTitle } = Astro.props as {
+  post: Post
+  isDetail?: boolean
+  channelAvatar?: string
+  channelTitle: string
+}
+
+const channelName = getEnv(import.meta.env, 'CHANNEL')
+const commentsEnabled = getBooleanEnv(import.meta.env, 'COMMENTS')
+const reactionsEnabled = getBooleanEnv(import.meta.env, 'REACTIONS')
+
+const timeago = await formatPostTime(post.datetime, timezone, locale)
+const permalink = `${SITE_URL}posts/${post.id}`
+const contentHtml = sanitizeContentHtml(post.content)
+const hasContent = contentHtml.length > 0
+const hasStoryTitle = post.title.trim().length > 0
+const hasReactions = Boolean(reactionsEnabled && post.reactions?.length > 0)
+const hasTags = post.tags.length > 0
+---
+
+<article class="post-entry" style={{ 'view-transition-name': `post-${post.id}` }}>
+  {channelAvatar && <img class="post-entry-avatar" src={channelAvatar} alt="" width="40" height="40" loading="lazy" />}
+  <p class="post-entry-author">{channelTitle}</p>
+  {
+    hasStoryTitle && (
+      <div class="hn-story">
+        <h2>
+          <a href={permalink}>{post.title}</a>
+        </h2>
+      </div>
+    )
+  }
+  <div class="post-meta">
+    <span class="timeline-dot" aria-hidden="true"></span>
+    <p>
+      <a href={permalink} title={post.datetime}>
+        <time datetime={post.datetime} title={timeago}>{timeago}</time>
+      </a>
+    </p>
+  </div>
+  {hasContent && <div class="post-content content" set:html={contentHtml} />}
+  <p class="tg-message-meta">
+    <a href={permalink} title={post.datetime}>
+      <time datetime={post.datetime} title={timeago}>{timeago}</time>
+    </a>
+  </p>
+  {
+    hasReactions && (
+      <div class="post-reactions">
+        <ul role="list" aria-label="Reactions">
+          {post.reactions.map((reaction) => (
+            <li class:list={['reaction', reaction.isPaid && paidReactionClass]} aria-label={getReactionLabel(reaction)}>
+              <span class="reaction-emoji">
+                {reaction.isPaid ? (
+                  '\u2B50'
+                ) : reaction.emojiImage ? (
+                  <img
+                    src={reaction.emojiImage}
+                    alt={reaction.emoji || 'emoji'}
+                    loading="lazy"
+                    width="20"
+                    height="20"
+                    class="reaction-image"
+                  />
+                ) : (
+                  reaction.emoji
+                )}
+              </span>
+              <span class="reaction-count">{reaction.count}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  {
+    hasTags && (
+      <p class="tags post-tags">
+        <span class="tag-icon" aria-hidden="true" />
+        {post.tags.map((tag: string) => (
+          <a href={getTagHref(tag)} title={tag}>
+            {tag}
+          </a>
+        ))}
+      </p>
+    )
+  }
+
+  {
+    commentsEnabled && isDetail && (
+      <section class="post-comments" aria-label="Telegram comments">
+        {/* Telegram comments are the only intentional client-side JS exception. */}
+        <script
+          is:inline
+          async
+          src="https://telegram.org/js/telegram-widget.js"
+          data-telegram-discussion={`${channelName}/${post.id}`}
+          data-comments-limit="50"
+          data-colorful="1"
+          data-color="454545"
+        >
+          /* Explicit closing avoids an astro-eslint-parser v3 crash. */
+        </script>
+      </section>
+    )
+  }
+</article>

@@ -1,0 +1,146 @@
+@layer components {
+  .content {
+    .tg-expandable {
+      @apply relative rounded-panel border-l-[3px] border-accent bg-surface p-1.5 pl-2.5 pr-[30px];
+      margin: 16px 0;
+      min-height: 3.6em;
+      font-size: 0.8em;
+    }
+
+    .tg-expandable__checkbox {
+      @apply sr-only;
+    }
+
+    .tg-expandable__content {
+      @apply block select-text;
+    }
+
+    @supports selector(:has(*)) {
+      .tg-expandable__content {
+        @apply block overflow-hidden;
+        display: -webkit-box;
+        line-clamp: 3;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
+
+      .tg-expandable:has(.tg-expandable__checkbox:checked) .tg-expandable__content {
+        @apply block overflow-visible pb-6;
+        line-clamp: unset;
+        -webkit-line-clamp: unset;
+        -webkit-box-orient: unset;
+      }
+    }
+
+    .tg-expandable__toggle {
+      @apply hidden;
+    }
+
+    @supports selector(:has(*)) {
+      .tg-expandable__toggle {
+        @apply absolute bottom-1.5 right-1.5 z-2 block size-[22px] cursor-pointer select-none rounded-full;
+      }
+
+      .tg-expandable__toggle::after {
+        @apply absolute left-1/2 top-1/2 block h-0 w-0 border-y-[6px] border-l-[6px] border-y-transparent border-l-muted transition-transform duration-200 [filter:var(--icon-secondary-filter)];
+        content: '';
+        transform: translate(-50%, -50%);
+      }
+
+      .tg-expandable:has(.tg-expandable__checkbox:checked) .tg-expandable__toggle::after {
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
+
+      .tg-expandable:has(.tg-expandable__checkbox:focus-visible) .tg-expandable__toggle {
+        @apply outline outline-2 outline-offset-2 outline-heading;
+      }
+    }
+
+    .spoiler-button {
+      @apply cursor-pointer;
+
+      input {
+        @apply sr-only;
+      }
+
+      tg-spoiler {
+        @apply m-auto mx-0.5 rounded-panel bg-code text-transparent;
+        background-position: 60% 60%;
+        background-size: 3000px 3000px;
+        background-image: repeating-conic-gradient(
+          color-mix(in srgb, var(--color-muted) 55%, transparent) 0 0.0001%,
+          transparent 0 0.0002%
+        );
+      }
+
+      input:checked + tg-spoiler {
+        background: unset;
+        color: unset;
+      }
+
+      &:has(input:focus-visible) {
+        @apply outline outline-2 outline-offset-2 outline-heading;
+      }
+    }
+
+    [popover] {
+      @apply hidden;
+
+      &:popover-open {
+        @apply block;
+      }
+    }
+
+    .image-preview-wrap {
+      @apply block w-full;
+    }
+
+    .image-preview-wrap img {
+      @apply block h-auto w-full;
+    }
+
+    .image-preview-button {
+      @apply mb-4 cursor-pointer appearance-none border-0 bg-transparent p-0;
+    }
+
+    .image-preview-button:focus-visible {
+      @apply outline outline-2 outline-offset-4 outline-heading;
+    }
+
+    .modal {
+      @apply fixed inset-0 z-[1000] hidden box-border h-dvh w-screen overflow-hidden overscroll-contain border-0 bg-black/80 p-5 backdrop-blur-[20px];
+    }
+
+    .modal:popover-open {
+      @apply grid place-items-center;
+    }
+
+    .modal__backdrop {
+      @apply absolute inset-0 z-0 block cursor-pointer appearance-none border-0 bg-transparent;
+    }
+
+    .modal__surface {
+      @apply relative z-10 m-0 flex w-auto items-center justify-center overflow-hidden box-border px-6 pb-6 pt-12;
+      max-width: calc(100vw - 40px);
+      max-height: calc(100dvh - 40px);
+    }
+
+    .modal__close {
+      @apply absolute z-20 inline-flex size-10 cursor-pointer items-center justify-center rounded-full border-0 bg-[rgba(0,0,0,0.72)] text-2xl leading-none text-white shadow-soft;
+      top: max(16px, env(safe-area-inset-top));
+      right: max(16px, env(safe-area-inset-right));
+    }
+
+    .modal__close:hover {
+      @apply bg-[rgba(0,0,0,0.86)];
+    }
+
+    .modal-img {
+      @apply m-0 block rounded-media border border-line object-contain shadow-soft;
+      width: auto !important;
+      height: auto !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+    }
+  }
+}

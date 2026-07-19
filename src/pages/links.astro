@@ -1,47 +1,25 @@
 ---
-import Layout from '../layouts/base.astro'
-import Header from '../components/header.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import DirectorySection from '../components/DirectorySection.astro'
 import { getChannelInfo } from '../lib/telegram'
-import { getEnv } from '../lib/env'
+import { getEnv, parseDelimitedItems } from '../lib/env'
 
-const channel = await getChannelInfo(Astro)
-
-channel.seo = {
-  title: 'Links',
-}
-
-const links = (getEnv(import.meta.env, Astro, 'LINKS') || '')
-  .split(';')
-  .filter(Boolean)
-  .map((link) => {
-    link = link.split(',')
-    return {
-      title: link[0],
-      href: link[1],
-    }
-  })
+const channel = await getChannelInfo()
+const pageSeo = { title: 'Links' }
+const links = parseDelimitedItems(getEnv(import.meta.env, 'LINKS'))
 
 if (!links.length) {
   return Astro.redirect('/')
 }
+
+const items = links.map((link) => ({
+  href: link.href,
+  label: link.title,
+  title: link.title,
+  external: true,
+}))
 ---
 
-<Layout channel={channel} id="main-container">
-  <slot name="header">
-    <Header channel={channel} />
-  </slot>
-
-  <div class="section-title">Links</div>
-
-  <div class="tag-cloud">
-    {
-      links.map((link) => (
-        <div class="tag-cloud-item">
-          <a href={link.href} class="tag" target="_blank" rel="noopener" title={link.title}>
-            {link.title}
-          </a>
-        </div>
-      ))
-    }
-  </div>
-</Layout>
+<BaseLayout channel={channel} seo={pageSeo} pageType="page">
+  <DirectorySection id="links" title="Links" items={items} />
+</BaseLayout>

@@ -1,0 +1,92 @@
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: light dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+    width: 100%;
+    max-width: calc(var(--width) + var(--body-padding-inline) + var(--body-padding-inline));
+    margin: 0 auto;
+    padding-block: 20px;
+    padding-inline: var(--body-padding-inline);
+    background: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    line-height: 1.5;
+    text-align: left;
+    overflow-wrap: break-word;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--heading-color);
+    font-family: var(--font-main);
+    line-height: 1.25;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  img,
+  video,
+  iframe {
+    max-width: 100%;
+  }
+
+  a {
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:link,
+  a:visited {
+    color: var(--link-color);
+  }
+
+  a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  main {
+    width: 100%;
+    flex: 1 0 auto;
+    line-height: 1.6;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 3px;
+  }
+
+  hr {
+    margin: 2rem 0;
+    border: 0;
+    border-top: 1px dashed var(--border-color);
+  }
+}

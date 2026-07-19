@@ -1,0 +1,9 @@
+@import 'prismjs/themes/prism.css' layer(components);
+
+/* Order matters because these modules share the same cascade layer. */
+@import './content/typography.css';
+@import './content/syntax.css';
+@import './content/media.css';
+@import './content/link-preview.css';
+@import './content/telegram-widgets.css';
+@import './content/interactive.css';

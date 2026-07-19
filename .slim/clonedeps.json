@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-07-15T00:00:00.000Z",
+  "dependencies": [
+    {
+      "name": "HermanMartinus/bearblog",
+      "resolvedVersion": "a6cf650886d11461dd1839d02020ca0aee0fee67",
+      "repoUrl": "https://github.com/HermanMartinus/bearblog.git",
+      "ref": "a6cf650886d11461dd1839d02020ca0aee0fee67",
+      "path": ".slim/clonedeps/repos/HermanMartinus__bearblog",
+      "packagePath": ".",
+      "reason": "Bear-compatible visitor DOM and default theme contract reference"
+    },
+    {
+      "name": "panr/hugo-theme-terminal",
+      "resolvedVersion": "4acd067c48195ac503541ba75f9259c7158d3792",
+      "repoUrl": "https://github.com/panr/hugo-theme-terminal.git",
+      "ref": "4acd067c48195ac503541ba75f9259c7158d3792",
+      "path": ".slim/clonedeps/repos/panr__hugo-theme-terminal",
+      "packagePath": ".",
+      "reason": "Terminal visual language, CSS, and Hugo template reference"
+    },
+    {
+      "name": "miantiao-me/astro-aria",
+      "resolvedVersion": "15c6eb8143ac55f9ba8d925b43f973ceef046980",
+      "repoUrl": "https://github.com/miantiao-me/astro-aria.git",
+      "ref": "15c6eb8143ac55f9ba8d925b43f973ceef046980",
+      "path": ".slim/clonedeps/repos/miantiao-me__astro-aria",
+      "packagePath": ".",
+      "reason": "Aria visual language, Tailwind composition, and Astro component reference"
+    }
+  ]
+}

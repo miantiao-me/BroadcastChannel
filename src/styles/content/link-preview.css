@@ -1,0 +1,46 @@
+@layer components {
+  .content {
+    .tgme_widget_message_link_preview {
+      @apply mt-4 hidden;
+
+      .link_preview_site_name,
+      .link_preview_title,
+      .link_preview_description {
+        @apply hidden;
+      }
+    }
+
+    .tgme_widget_message_link_preview:has(.link_preview_site_name) {
+      @apply block rounded-panel border-l-[3px] border-accent bg-surface p-1.5 pl-2.5;
+
+      .link_preview_title {
+        @apply block text-[1em] font-bold leading-8;
+      }
+
+      .link_preview_description {
+        @apply block leading-normal;
+        font-size: 0.8em;
+      }
+    }
+
+    .tgme_widget_message_link_preview:has(.link_preview_image) {
+      @apply relative flex border-0 bg-transparent p-0;
+
+      .link_preview_image {
+        @apply aspect-[1200/630] object-cover;
+      }
+
+      .link_preview_site_name {
+        @apply absolute block rounded-panel bg-[rgba(0,0,0,0.66)] px-1 text-sm leading-normal text-white truncate;
+        bottom: var(--box-margin);
+        left: var(--box-margin);
+        max-width: calc(100% - 28px);
+      }
+
+      .link_preview_title,
+      .link_preview_description {
+        @apply hidden;
+      }
+    }
+  }
+}

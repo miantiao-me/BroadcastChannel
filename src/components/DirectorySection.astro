@@ -1,0 +1,36 @@
+---
+interface DirectoryItem {
+  href: string
+  label: string
+  title?: string
+  external?: boolean
+}
+
+const { id, title, items } = Astro.props as {
+  id?: string
+  title: string
+  items: DirectoryItem[]
+}
+const titleId = id ?? `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'section'}-title`
+---
+
+<section class="directory" aria-labelledby={titleId}>
+  <h1 id={titleId}>{title}</h1>
+
+  <ul class="tags directory-list" role="list">
+    {
+      items.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            title={item.title ?? item.label}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener noreferrer' : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
