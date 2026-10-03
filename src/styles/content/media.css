@@ -60,7 +60,7 @@
     }
 
     .tg-emoji {
-      @apply h-[1.15em] w-[1.15em] align-[-0.15em];
+      @apply inline-block h-[1.15em] w-[1.15em] align-[-0.15em];
     }
 
     .sticker {
