@@ -40,6 +40,7 @@
 - [万事屋工程部](https://t.wanshiwu.fyi/)
 - [折腾啥 @xream](https://telegram.zhetengsha.eu.org)
 - [北方的博客](https://100412.xyz)
+- [趣味播报](https://qwbb.ocopd.com)
 
 ### 平台
 

@@ -18,6 +18,7 @@ const { post, isDetail, channelAvatar, channelTitle } = Astro.props as {
 const channelName = getEnv(import.meta.env, 'CHANNEL')
 const commentsEnabled = getBooleanEnv(import.meta.env, 'COMMENTS')
 const reactionsEnabled = getBooleanEnv(import.meta.env, 'REACTIONS')
+const commentText = locale?.toLowerCase().startsWith('zh') ? '评论' : 'Comments'
 
 const timeago = await formatPostTime(post.datetime, timezone, locale)
 const permalink = `${SITE_URL}posts/${post.id}`
@@ -63,6 +64,16 @@ const commentsFrameScript = `<script>
       <a href={permalink} title={post.datetime}>
         <time datetime={post.datetime} title={timeago}>{timeago}</time>
       </a>
+      {
+        !isDetail && (
+          <>
+            <span class="meta-separator" style="margin: 0 4px;">·</span>
+            <a href={permalink} class="meta-comment-link">
+              💬 {commentText}
+            </a>
+          </>
+        )
+      }
     </p>
   </div>
   {hasContent && <div class="post-content content" set:html={contentHtml} />}
@@ -70,6 +81,16 @@ const commentsFrameScript = `<script>
     <a href={permalink} title={post.datetime}>
       <time datetime={post.datetime} title={timeago}>{timeago}</time>
     </a>
+    {
+      !isDetail && commentsEnabled && (
+        <>
+          <span class="meta-separator" style="margin: 0 4px;">·</span>
+          <a href={permalink} class="meta-comment-link">
+            💬 {commentText}
+          </a>
+        </>
+      )
+    }
   </p>
   {
     hasReactions && (
