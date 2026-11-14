@@ -1,4 +1,5 @@
 import type { ChannelInfo, GetChannelInfoParams, Post } from '../../types'
+import { pageEdges } from '../pagination'
 import { modifyHTMLContent } from './content'
 import { extractPost } from './parse'
 import { loadChannelDocument } from './request'
@@ -13,6 +14,15 @@ export async function getChannelPost(id: string): Promise<Post | null> {
   const post = await extractPost($, null, { channel, telegramHost, staticProxy, reactionsEnabled })
 
   return isRenderablePost(post) ? post : null
+}
+
+// getChannelNewestPostId returns the id of the newest post the channel has,
+// used to decide whether a "newer" (After) pagination link still has posts to
+// show. The home view (no before/after cursor) is the newest page, so its
+// newest post is the channel's newest post (#56). The request is cached.
+export async function getChannelNewestPostId(): Promise<string | undefined> {
+  const info = await getChannelInfo({})
+  return pageEdges(info.posts).newest
 }
 
 export async function getChannelInfo(params: GetChannelInfoParams = {}): Promise<ChannelInfo> {
