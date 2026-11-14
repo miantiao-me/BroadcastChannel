@@ -63,6 +63,7 @@ For detailed tutorials, see [Deploy your Astro site](https://docs.astro.build/en
 - Optional theme visual inspiration: [Telegram public channel previews](https://t.me/s/), independently implemented with no official affiliation with Telegram Messenger Inc.
 - Optional theme visual inspiration: [Zed's Agentic Engineering page](https://zed.dev/agentic-engineering), independently implemented with no official affiliation with Zed Industries, Inc.
 - Original optional theme: Polar, a project-owned design with no external visual upstream
+- Optional theme visual inspiration: [Neobrutalism Components](https://github.com/ekmas/neobrutalism-components) by Ekmas, independently implemented with no official affiliation
 
 ## 🏗️ Deployment
 
@@ -166,24 +167,31 @@ TARGET_WHITELIST=a.com,b.com
 
 Base is always loaded. Leave `HEADER_INJECT` empty to use Base, or load **exactly one** built-in override:
 
-| Theme            | Path                           |
-| ---------------- | ------------------------------ |
-| Sepia            | `/themes/sepia.css`            |
-| Aria             | `/themes/aria.css`             |
-| Terminal Amber   | `/themes/terminal-amber.css`   |
-| Terminal Green   | `/themes/terminal-green.css`   |
-| Terminal Cyan    | `/themes/terminal-cyan.css`    |
-| Terminal Magenta | `/themes/terminal-magenta.css` |
-| HN News          | `/themes/hn-news.css`          |
-| TG Channel       | `/themes/tg-channel.css`       |
-| ZAE              | `/themes/zae.css`              |
-| Polar            | `/themes/polar.css`            |
+| Theme               | Path                              |
+| ------------------- | --------------------------------- |
+| Sepia               | `/themes/sepia.css`               |
+| Aria                | `/themes/aria.css`                |
+| Terminal Amber      | `/themes/terminal-amber.css`      |
+| Terminal Green      | `/themes/terminal-green.css`      |
+| Terminal Cyan       | `/themes/terminal-cyan.css`       |
+| Terminal Magenta    | `/themes/terminal-magenta.css`    |
+| HN News             | `/themes/hn-news.css`             |
+| TG Channel          | `/themes/tg-channel.css`          |
+| ZAE                 | `/themes/zae.css`                 |
+| Polar               | `/themes/polar.css`               |
+| Neobrutalism        | `/themes/neobrutalism.css`        |
+| Neobrutalism Yellow | `/themes/neobrutalism-yellow.css` |
+| Neobrutalism Blue   | `/themes/neobrutalism-blue.css`   |
+| Neobrutalism Pink   | `/themes/neobrutalism-pink.css`   |
+| Neobrutalism Green  | `/themes/neobrutalism-green.css`  |
+| Neobrutalism Purple | `/themes/neobrutalism-purple.css` |
+| Neobrutalism Orange | `/themes/neobrutalism-orange.css` |
 
 ```env
-HEADER_INJECT='<link rel="stylesheet" href="/themes/polar.css">'
+HEADER_INJECT='<link rel="stylesheet" href="/themes/neobrutalism.css">'
 ```
 
-HN News, TG Channel, ZAE, and Polar are fixed-light themes. Do not load `/themes/terminal-base.css` directly; there is no `/themes/terminal.css`.
+HN News, TG Channel, ZAE, Polar, and Neobrutalism are fixed-light themes. Do not load `/themes/terminal-base.css` or `/themes/neobrutalism-base.css` directly; there is no `/themes/terminal.css`.
 
 Full configuration, light/dark behavior, platform dashboard values, custom CSS, and security notes: **[THEMES.md](./THEMES.md)**. Theme credits: **[NOTICE.md](./NOTICE.md)**.
 

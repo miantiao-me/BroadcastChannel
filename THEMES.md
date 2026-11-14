@@ -8,19 +8,26 @@ There is no `THEME` environment variable, theme registry, browser-side theme swi
 
 Use one of these exact `.env` configurations:
 
-| Theme            | Light and dark behavior             | `HEADER_INJECT`                                                               |
-| ---------------- | ----------------------------------- | ----------------------------------------------------------------------------- |
-| Base             | Follows the system preference       | Leave unset or use `HEADER_INJECT=`                                           |
-| Sepia            | Fixed light, warm-paper palette     | `HEADER_INJECT='<link rel="stylesheet" href="/themes/sepia.css">'`            |
-| Aria             | Follows the system preference       | `HEADER_INJECT='<link rel="stylesheet" href="/themes/aria.css">'`             |
-| Terminal Amber   | Fixed dark, amber accent            | `HEADER_INJECT='<link rel="stylesheet" href="/themes/terminal-amber.css">'`   |
-| Terminal Green   | Fixed dark, green accent            | `HEADER_INJECT='<link rel="stylesheet" href="/themes/terminal-green.css">'`   |
-| Terminal Cyan    | Fixed dark, cyan accent             | `HEADER_INJECT='<link rel="stylesheet" href="/themes/terminal-cyan.css">'`    |
-| Terminal Magenta | Fixed dark, magenta accent          | `HEADER_INJECT='<link rel="stylesheet" href="/themes/terminal-magenta.css">'` |
-| HN News          | Fixed light, full-post news feed    | `HEADER_INJECT='<link rel="stylesheet" href="/themes/hn-news.css">'`          |
-| TG Channel       | Fixed light, single-column messages | `HEADER_INJECT='<link rel="stylesheet" href="/themes/tg-channel.css">'`       |
-| ZAE              | Fixed light, compact document sheet | `HEADER_INJECT='<link rel="stylesheet" href="/themes/zae.css">'`              |
-| Polar            | Fixed light, minimal 760px column   | `HEADER_INJECT='<link rel="stylesheet" href="/themes/polar.css">'`            |
+| Theme               | Light and dark behavior             | `HEADER_INJECT`                                                                  |
+| ------------------- | ----------------------------------- | -------------------------------------------------------------------------------- |
+| Base                | Follows the system preference       | Leave unset or use `HEADER_INJECT=`                                              |
+| Sepia               | Fixed light, warm-paper palette     | `HEADER_INJECT='<link rel="stylesheet" href="/themes/sepia.css">'`               |
+| Aria                | Follows the system preference       | `HEADER_INJECT='<link rel="stylesheet" href="/themes/aria.css">'`                |
+| Terminal Amber      | Fixed dark, amber accent            | `HEADER_INJECT='<link rel="stylesheet" href="/themes/terminal-amber.css">'`      |
+| Terminal Green      | Fixed dark, green accent            | `HEADER_INJECT='<link rel="stylesheet" href="/themes/terminal-green.css">'`      |
+| Terminal Cyan       | Fixed dark, cyan accent             | `HEADER_INJECT='<link rel="stylesheet" href="/themes/terminal-cyan.css">'`       |
+| Terminal Magenta    | Fixed dark, magenta accent          | `HEADER_INJECT='<link rel="stylesheet" href="/themes/terminal-magenta.css">'`    |
+| HN News             | Fixed light, full-post news feed    | `HEADER_INJECT='<link rel="stylesheet" href="/themes/hn-news.css">'`             |
+| TG Channel          | Fixed light, single-column messages | `HEADER_INJECT='<link rel="stylesheet" href="/themes/tg-channel.css">'`          |
+| ZAE                 | Fixed light, compact document sheet | `HEADER_INJECT='<link rel="stylesheet" href="/themes/zae.css">'`                 |
+| Polar               | Fixed light, minimal 760px column   | `HEADER_INJECT='<link rel="stylesheet" href="/themes/polar.css">'`               |
+| Neobrutalism        | Fixed light, classic bright yellow  | `HEADER_INJECT='<link rel="stylesheet" href="/themes/neobrutalism.css">'`        |
+| Neobrutalism Yellow | Fixed light, classic bright yellow  | `HEADER_INJECT='<link rel="stylesheet" href="/themes/neobrutalism-yellow.css">'` |
+| Neobrutalism Blue   | Fixed light, electric blue accent   | `HEADER_INJECT='<link rel="stylesheet" href="/themes/neobrutalism-blue.css">'`   |
+| Neobrutalism Pink   | Fixed light, hot pink accent        | `HEADER_INJECT='<link rel="stylesheet" href="/themes/neobrutalism-pink.css">'`   |
+| Neobrutalism Green  | Fixed light, lime green accent      | `HEADER_INJECT='<link rel="stylesheet" href="/themes/neobrutalism-green.css">'`  |
+| Neobrutalism Purple | Fixed light, vivid purple accent    | `HEADER_INJECT='<link rel="stylesheet" href="/themes/neobrutalism-purple.css">'` |
+| Neobrutalism Orange | Fixed light, vibrant orange accent  | `HEADER_INJECT='<link rel="stylesheet" href="/themes/neobrutalism-orange.css">'` |
 
 Aria uses a neutral, system-sans presentation with light and dark palettes, a dashed square-line grid wash, and larger media radii. Sepia uses a fixed light palette and system-sans typography. All four Terminal variants use the same square, fixed-dark, Fira Code–first monospace design (loaded from Google Fonts when available); only their background, surface, accent, muted, border, and visited-link palettes differ.
 
@@ -28,7 +35,9 @@ HN News is a compact, utilitarian full-post feed with a warm light canvas, orang
 
 Polar is an original BroadcastChannel theme with a fixed-light, 760px single-column layout, a system sans-serif stack, a white canvas with alpha-black ink, and solid rules. It uses no shadows or patterns and does not switch with the system preference.
 
-All overrides are independently implemented for BroadcastChannel. Polar is an original project-owned design; HN News, TG Channel, and ZAE are visual interpretations, not source adaptations or official themes. No source code, CSS, fonts, or assets from Hacker News, Telegram, or Zed are bundled. See [NOTICE.md](./NOTICE.md) for provenance and non-affiliation details.
+The **Neobrutalism** family is fixed-light, high-contrast, and tactile, featuring bold solid borders, zero-blur offset drop shadows, and physical press micro-interactions. It provides Yellow, Blue, Pink, Green, Purple, and Orange entry files; `/themes/neobrutalism.css` defaults to the classic Bright Yellow palette. `/themes/neobrutalism-base.css` is imported internally by the palette entry files.
+
+All overrides are independently implemented for BroadcastChannel. Polar is an original project-owned design; Neobrutalism is visually inspired by neobrutalism-components; HN News, TG Channel, and ZAE are visual interpretations, not source adaptations or official themes. No source code, CSS, fonts, or assets from Hacker News, Telegram, or Zed are bundled. See [NOTICE.md](./NOTICE.md) for provenance and non-affiliation details.
 
 `/themes/terminal-base.css` is an internal shared stylesheet imported by the four Terminal entry files. Do not load it directly: it has no standalone palette. There is no `/themes/terminal.css` entry point.
 

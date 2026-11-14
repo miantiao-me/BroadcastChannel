@@ -1,0 +1,17 @@
+@import './neobrutalism-base.css';
+
+:root {
+  --neo-main: #c084fc;
+  --neo-main-hover: #a855f7;
+  --neo-background: #faf5ff;
+  --neo-surface: #ffffff;
+  --neo-foreground: #000000;
+  --neo-heading: #000000;
+  --neo-border: #000000;
+  --neo-shadow: #000000;
+  --neo-muted: #4b5563;
+  --neo-quote-bg: #f3e8ff;
+  --neo-code-bg: #ffffff;
+  --neo-tag-bg: #e9d5ff;
+  --neo-tag-color: #000000;
+}

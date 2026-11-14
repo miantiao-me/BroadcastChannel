@@ -82,4 +82,13 @@ The optional `public/themes/polar.css` theme is an original BroadcastChannel des
 - License: [GNU Affero General Public License v3.0](https://github.com/ccbikai/BroadcastChannel/blob/main/LICENSE)
 - Nature: Original project-owned design and implementation; no external visual upstream
 
-These are attribution and compatibility notices only. They do not imply endorsement by or official affiliation with Bear Blog, Planetable, hugo-theme-terminal, Aria Template, Y Combinator or Hacker News, Telegram Messenger Inc., or Zed Industries, Inc., and they do not change the licensing of BroadcastChannel under the root `LICENSE`.
+## Neobrutalism theme family
+
+The optional `public/themes/neobrutalism.css`, `neobrutalism-yellow.css`, `neobrutalism-blue.css`, `neobrutalism-pink.css`, `neobrutalism-green.css`, `neobrutalism-purple.css`, and `neobrutalism-orange.css` themes are visually inspired by [neobrutalism-components](https://github.com/ekmas/neobrutalism-components) created by Ekmas. They are independently implemented for BroadcastChannel's DOM; upstream source files are not bundled in this repository.
+
+- Project: https://github.com/ekmas/neobrutalism-components / https://neobrutalism.dev
+- Creator: Ekmas ([@ekmas](https://github.com/ekmas))
+- License: [MIT](https://github.com/ekmas/neobrutalism-components/blob/main/LICENSE)
+- Nature: Visual inspiration; independent implementation, not adapted source
+
+These are attribution and compatibility notices only. They do not imply endorsement by or official affiliation with Bear Blog, Planetable, hugo-theme-terminal, Aria Template, Y Combinator or Hacker News, Telegram Messenger Inc., Zed Industries, Inc., or Ekmas, and they do not change the licensing of BroadcastChannel under the root `LICENSE`.

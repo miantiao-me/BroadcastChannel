@@ -13,6 +13,9 @@ const hnNews = readFileSync(new URL('../../public/themes/hn-news.css', import.me
 const tgChannel = readFileSync(new URL('../../public/themes/tg-channel.css', import.meta.url), 'utf8')
 const zae = readFileSync(new URL('../../public/themes/zae.css', import.meta.url), 'utf8')
 const polar = readFileSync(new URL('../../public/themes/polar.css', import.meta.url), 'utf8')
+const neobrutalismBase = readFileSync(new URL('../../public/themes/neobrutalism-base.css', import.meta.url), 'utf8')
+const neobrutalismYellow = readFileSync(new URL('../../public/themes/neobrutalism-yellow.css', import.meta.url), 'utf8')
+const neobrutalism = readFileSync(new URL('../../public/themes/neobrutalism.css', import.meta.url), 'utf8')
 const postEntry = readFileSync(new URL('../components/PostEntry.astro', import.meta.url), 'utf8')
 const postsPage = readFileSync(new URL('../components/PostsPage.astro', import.meta.url), 'utf8')
 
@@ -168,6 +171,31 @@ describe('bear CSS contract', () => {
 
     expect(polar).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)/)
     expect(polar).toMatch(/@media\s+print/)
+  })
+
+  it('keeps Neobrutalism on the fixed-light Bear and public variable contracts', () => {
+    expect(neobrutalismBase).toMatch(/color-scheme:\s*light;/)
+    expect(neobrutalismBase).not.toMatch(/color-scheme:\s*light\s+dark;/)
+
+    for (const variable of [...bearVariables, ...publicVariables]) {
+      expect(neobrutalismBase).toContain(`${variable}:`)
+    }
+
+    expect(neobrutalismBase).toContain('--width: 780px;')
+  })
+
+  it('keeps Neobrutalism body padding aligned across desktop and mobile', () => {
+    const css = compact(neobrutalismBase)
+
+    expect(neobrutalismBase).toContain('--body-padding-inline: 1.25rem;')
+    expect(css).toContain('body { padding: 0 var(--body-padding-inline) 2rem;')
+    expect(css).toContain('@media (max-width: 37.5rem) { :root { --body-padding-inline: 1rem; }')
+  })
+
+  it('imports base styles into neobrutalism palettes', () => {
+    expect(neobrutalismYellow).toContain('@import \'./neobrutalism-base.css\';')
+    expect(neobrutalismYellow).toContain('--neo-main: #fde047;')
+    expect(neobrutalism).toContain('@import \'./neobrutalism-yellow.css\';')
   })
 
   it('keeps optional feed hooks hidden in Base', () => {
